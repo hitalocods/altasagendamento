@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title id="pageTitle">Atlas Agendamento — Vitrine Exclusiva</title>
   <meta name="description" id="pageDescription" content="Beleza e cuidado que respeitam o seu tempo e a sua história." />
 
@@ -45,6 +45,16 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
     }
 
     body {
@@ -519,6 +529,51 @@
     footer a:hover {
       opacity: 1;
       color: var(--champagne-gold);
+    }
+
+    /* ============================================
+       RESPONSIVIDADE MOBILE — vitrine.html
+    ============================================ */
+    @media (max-width: 480px) {
+      .top-tenant-bar {
+        padding: 10px 14px;
+        gap: 6px;
+      }
+      .btn-action-pill {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+      .platform-logo {
+        font-size: 12px;
+      }
+      .hero-container {
+        padding-top: 64px;
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+      .title-first {
+        font-size: clamp(36px, 11vw, 52px);
+      }
+      .title-last {
+        font-size: clamp(32px, 10vw, 46px);
+      }
+      .photo-area {
+        max-width: clamp(200px, 72vw, 260px);
+      }
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      .pill-btn {
+        width: 100%;
+        text-align: center;
+        padding: 13px 20px;
+        font-size: 13px;
+      }
+      .modal-card {
+        border-radius: 20px;
+        padding: 20px 16px;
+      }
     }
   </style>
 </head>

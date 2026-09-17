@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Atlas Agendamento — A Plataforma de Agendamentos de Alto Padrão</title>
   <meta name="description" content="Eleve o padrão do seu salão ou espaço de beleza. Sistema completo de agendamento online, vitrine editorial com sua foto de capa, gestão de equipe, financeiro e estoque." />
 
@@ -52,6 +52,11 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
     body {
       background-color: var(--bg-body);
       background: radial-gradient(circle at 50% 0%, #FFFFFF 0%, #FAF8F5 55%, #F4EFE6 100%);
@@ -60,6 +65,26 @@
       overflow-x: hidden;
       min-height: 100vh;
       line-height: 1.6;
+      width: 100%;
+      max-width: 100vw;
+      position: relative;
+    }
+
+    /* Previne qualquer elemento de causar overflow horizontal */
+    section, header, nav, footer, div {
+      max-width: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Font size mínimo para inputs no iOS (evita zoom automático) */
+    @media (max-width: 768px) {
+      input, select, textarea, button {
+        font-size: 16px;
+      }
     }
 
     /* Ambient Lighting Clean */
@@ -528,7 +553,7 @@
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
       gap: 24px;
     }
 
@@ -890,12 +915,12 @@
     .cta-banner {
       background: linear-gradient(135deg, #241A15 0%, #17110E 100%);
       border: 1px solid rgba(214, 189, 159, 0.4);
-      border-radius: 36px;
-      padding: clamp(40px, 8vw, 70px) clamp(24px, 6vw, 60px);
+      border-radius: clamp(20px, 5vw, 36px);
+      padding: clamp(36px, 8vw, 70px) clamp(20px, 6vw, 60px);
       text-align: center;
       color: #FAF8F5;
       max-width: 1100px;
-      margin: 40px auto 80px;
+      margin: 40px clamp(16px, 4vw, 0px) 80px;
       box-shadow: 0 25px 60px rgba(28, 20, 16, 0.3);
       position: relative;
       overflow: hidden;
@@ -946,12 +971,13 @@
     .modal-card {
       background: #FFFFFF;
       border: 1px solid var(--border-gold);
-      border-radius: 32px;
+      border-radius: clamp(20px, 5vw, 32px);
       max-width: 520px;
       width: 100%;
-      max-height: 90vh;
+      max-height: 90dvh;
       overflow-y: auto;
-      padding: clamp(24px, 5vw, 36px);
+      -webkit-overflow-scrolling: touch;
+      padding: clamp(20px, 5vw, 36px) clamp(16px, 4vw, 36px);
       box-shadow: var(--shadow-lg);
       position: relative;
       animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -1069,6 +1095,107 @@
       text-align: center;
       font-size: 12px;
       color: var(--text-muted);
+    }
+
+    /* ============================================
+       RESPONSIVIDADE MOBILE GLOBAL — index.html
+    ============================================ */
+    @media (max-width: 480px) {
+      /* Hero */
+      .hero-section {
+        padding: 28px 16px 40px;
+      }
+      .hero-title {
+        font-size: clamp(30px, 9vw, 38px);
+      }
+      .hero-desc {
+        font-size: 14px;
+      }
+      .hero-guarantee {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        font-size: 11px;
+      }
+      .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      .hero-buttons > * {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+      .btn-hero-large {
+        padding: 14px 20px;
+        font-size: 13px;
+      }
+
+      /* Showcase */
+      .showcase-wrapper {
+        border-radius: 20px;
+        padding: 14px;
+      }
+      .showcase-visual-arch {
+        display: none;
+      }
+
+      /* Features */
+      .features-section {
+        padding: 48px 16px;
+      }
+      .feature-card {
+        padding: 22px 18px;
+        border-radius: 18px;
+      }
+      .feature-card-title {
+        font-size: 20px;
+      }
+
+      /* Pricing */
+      .pricing-section {
+        padding: 40px 16px;
+      }
+      .pricing-card {
+        padding: 22px 16px;
+        border-radius: 20px;
+      }
+      .pricing-reassurance {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      /* CTA Banner */
+      .cta-banner {
+        margin: 32px 16px 48px;
+        padding: 32px 18px;
+        border-radius: 20px;
+      }
+      .cta-banner-title {
+        font-size: clamp(26px, 8vw, 36px);
+      }
+
+      /* Modal */
+      .modal-overlay {
+        padding: 10px;
+      }
+      .modal-card {
+        border-radius: 20px;
+        padding: 20px 16px;
+      }
+      .modal-title {
+        font-size: 24px;
+      }
+      .form-control {
+        font-size: 16px;
+        padding: 12px;
+      }
+      .photo-picker-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
     }
   </style>
 </head>
