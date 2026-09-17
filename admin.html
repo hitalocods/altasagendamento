@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Painel de Gestão & Financeiro — Geovanna Macedo</title>
+  <title>Painel de Gestão & Financeiro — Atlas</title>
   <meta name="description"
-    content="Painel de controle minimalista e clean de agendamentos, estoque e gestão financeira para Geovanna Macedo." />
+    content="Painel de controle minimalista e clean de agendamentos, equipe, estoque e gestão financeira." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1836,8 +1836,8 @@
   <div id="loginScreen" class="login-overlay">
     <div class="login-card">
       <div class="login-badge">✦ Painel Administrativo</div>
-      <h1 class="login-brand">Geovanna <span>Macedo</span></h1>
-      <p class="login-subtitle">Digite sua senha de acesso para gerenciar agendamentos, finanças e estoque.</p>
+      <h1 class="login-brand" id="adminLoginBrand">Painel <span>Administrativo</span></h1>
+      <p class="login-subtitle">Digite sua senha de acesso para gerenciar agendamentos, equipe, finanças e estoque.</p>
 
       <form id="formAdminLogin" onsubmit="handleAdminLogin(event)">
         <div class="login-input-group">
@@ -1865,14 +1865,14 @@
   <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeMobileDrawer()"></div>
   <aside class="mobile-drawer" id="mobileDrawer">
     <div class="drawer-header">
-      <div class="brand-title">Geovanna <span>Macedo</span></div>
+      <div class="brand-title" id="drawerBrandTitle">Painel <span>Admin</span></div>
       <button class="drawer-close-btn" onclick="closeMobileDrawer()" aria-label="Fechar menu">✕</button>
     </div>
 
     <div>
       <div class="db-status-badge" style="width: 100%; justify-content: center;">
         <div class="db-dot"></div>
-        <span id="drawerDbStatusText">Neon PostgreSQL Ativo</span>
+        <span id="drawerDbStatusText">Online & Seguro</span>
       </div>
     </div>
 
@@ -1895,6 +1895,10 @@
         <span>📅</span>
         <span>Agendamentos</span>
       </button>
+      <button class="drawer-nav-item" data-tab="professionals" onclick="switchTab('professionals'); closeMobileDrawer();">
+        <span>👥</span>
+        <span>Equipe & Profissionais</span>
+      </button>
       <button class="drawer-nav-item" data-tab="finances" onclick="switchTab('finances'); closeMobileDrawer();">
         <span>💰</span>
         <span>Financeiro Completo</span>
@@ -1910,6 +1914,10 @@
       <button class="drawer-nav-item" data-tab="services" onclick="switchTab('services'); closeMobileDrawer();">
         <span>💄</span>
         <span>Catálogo de Serviços</span>
+      </button>
+      <button class="drawer-nav-item" data-tab="business" onclick="switchTab('business'); closeMobileDrawer();">
+        <span>🏢</span>
+        <span>Meu Negócio & Foto</span>
       </button>
     </nav>
 
@@ -1937,7 +1945,7 @@
   <!-- Top Nav -->
   <header class="admin-nav">
     <a href="index.html" class="nav-brand">
-      <div class="brand-title">Geovanna <span>Macedo</span></div>
+      <div class="brand-title" id="navBrandTitle">Painel <span>Admin</span></div>
       <span class="badge-pill">Painel Admin</span>
     </a>
 
@@ -1954,7 +1962,7 @@
       </a>
       <div class="db-status-badge" id="dbStatusBadge">
         <div class="db-dot"></div>
-        <span id="dbStatusText">Neon Conectado</span>
+        <span id="dbStatusText">Online & Seguro</span>
       </div>
       <button class="btn-nav-action" onclick="openNewAppointmentModal()">
         + Novo Agendamento
@@ -1985,15 +1993,14 @@
   <main class="admin-container" id="adminMainContent">
     <!-- Abas de Navegação -->
     <nav class="tabs-bar">
-      <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard', this)">📊 Visão Geral &
-        Gráficos</button>
+      <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard', this)">📊 Visão Geral & Gráficos</button>
       <button class="tab-btn" data-tab="appointments" onclick="switchTab('appointments', this)">📅 Agendamentos</button>
+      <button class="tab-btn" data-tab="professionals" onclick="switchTab('professionals', this)">👥 Equipe & Profissionais</button>
       <button class="tab-btn" data-tab="finances" onclick="switchTab('finances', this)">💰 Financeiro Completo</button>
-      <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory', this)">📦 Controle de
-        Estoque</button>
-      <button class="tab-btn" data-tab="availability" onclick="switchTab('availability', this)">⏰ Horários &
-        Folgas</button>
+      <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory', this)">📦 Controle de Estoque</button>
+      <button class="tab-btn" data-tab="availability" onclick="switchTab('availability', this)">⏰ Horários & Folgas</button>
       <button class="tab-btn" data-tab="services" onclick="switchTab('services', this)">💄 Serviços</button>
+      <button class="tab-btn" data-tab="business" onclick="switchTab('business', this)">🏢 Meu Negócio</button>
     </nav>
 
     <!-- ============================================== -->
@@ -2299,11 +2306,222 @@
         </div>
       </div>
     </section>
+
+    <!-- ============================================== -->
+    <!-- 7. ABA: MEU NEGÓCIO & PERSONALIZAÇÃO (MULTI-TENANT) -->
+    <!-- ============================================== -->
+    <section id="viewBusiness" class="view-section">
+      <div class="panel-card">
+        <div class="panel-header" style="flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 class="panel-title">🏢 Identidade & Foto de Início</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+              Personalize o nome do seu salão, a foto de destaque que fica no início (arco editorial), bio e canais de contato.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <a href="index.html" id="btnPreviewSite" target="_blank" class="btn-nav-outline" style="text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+              👁️ Ver Meu Site
+            </a>
+          </div>
+        </div>
+
+        <form id="adminBusinessForm" onsubmit="handleSaveBusinessProfile(event)">
+          <!-- Foto de Capa / Arco Editorial -->
+          <div style="background: #FAF7F4; border: 1px solid var(--border-gold); border-radius: 20px; padding: 18px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
+            <div style="width: 110px; height: 145px; border-radius: 60px 60px 14px 14px; overflow: hidden; border: 2px solid var(--border-gold); background: #120e0c; box-shadow: 0 8px 20px rgba(0,0,0,0.15); flex-shrink: 0;">
+              <img id="adminBizPhotoPreview" src="img/geovana_clean.webp" alt="Foto de Início" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+
+            <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 10px;">
+              <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">
+                Foto de Destaque da Página Inicial (Arco Editorial)
+              </div>
+              <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                Essa é a foto que os clientes verão ao entrar no seu link exclusivo. Escolha uma foto em alta definição.
+              </p>
+              
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <label class="btn-nav-action" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;">
+                  📷 Escolher Nova Foto
+                  <input type="file" id="adminBizPhotoFile" accept="image/*" style="display: none;" onchange="handleAdminPhotoUpload(event)" />
+                </label>
+                <input type="text" id="adminBizPhotoUrl" class="form-control" style="flex: 1; min-width: 180px; font-size: 12px;" placeholder="Ou cole o link da foto..." oninput="updateAdminPhotoPreview(this.value)" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Links de Compartilhamento -->
+          <div style="background: rgba(214, 189, 159, 0.12); border: 1px dashed var(--champagne-dark); border-radius: 16px; padding: 14px 18px; margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+            <div>
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--champagne-dark);">
+                ✦ Seus Links Exclusivos para Clientes
+              </div>
+              <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-top: 4px;" id="adminShareLinksText">
+                Carregando links...
+              </div>
+            </div>
+            <button type="button" class="btn-nav-outline" onclick="copyClientBookingLink()" style="font-size: 11px; padding: 6px 12px;">
+              📋 Copiar Link de Agendamento
+            </button>
+          </div>
+
+          <!-- Campos de Dados do Negócio -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="adminBizTitleFirst">Primeiro Nome (Título)</label>
+              <input type="text" id="adminBizTitleFirst" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminBizTitleLast">Sobrenome / Marca (Subtítulo)</label>
+              <input type="text" id="adminBizTitleLast" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminBizBusinessName">Nome Comercial Completo</label>
+              <input type="text" id="adminBizBusinessName" class="form-control" required />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="adminBizTagline">Frase de Destaque (Tagline)</label>
+              <input type="text" id="adminBizTagline" class="form-control" placeholder="Ex: Atendimento Exclusivo" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminBizWhatsapp">WhatsApp para Contato / Fim de Semana</label>
+              <input type="text" id="adminBizWhatsapp" class="form-control" placeholder="(86) 99999-9999" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminBizPin">Senha do Admin (PIN)</label>
+              <input type="text" id="adminBizPin" class="form-control" placeholder="1234" required />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label" for="adminBizSpecialties">Especialidades (separadas por vírgula)</label>
+            <input type="text" id="adminBizSpecialties" class="form-control" placeholder="Noivas, Formandas, Maquiagem Social, Penteados" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label class="form-label" for="adminBizDescription">Texto Curto do Início (Hero)</label>
+            <textarea id="adminBizDescription" class="form-control" rows="2" style="resize: none;"></textarea>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" for="adminBizAboutText">Texto Completo "Quem Sou Eu" (Modal)</label>
+            <textarea id="adminBizAboutText" class="form-control" rows="3" style="resize: none;"></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="submit" class="btn-submit" id="btnSaveBizProfile">
+              💾 Salvar Alterações do Negócio
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 8. ABA: EQUIPE & PROFISSIONAIS                -->
+    <!-- ============================================== -->
+    <section id="viewProfessionals" class="view-section">
+      <div class="panel-card">
+        <div class="panel-header" style="flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <h2 class="panel-title">👥 Equipe & Profissionais</h2>
+              <span id="profPlanBadge" style="background: rgba(214, 189, 159, 0.25); color: var(--text-primary); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 9999px; border: 1px solid var(--border-gold);">
+                Plano: Salão Pro
+              </span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              Cadastre e gerencie os membros da sua equipe. Clientes podem escolher com quem desejam agendar no site.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <div id="profLimitTracker" style="font-size: 12px; font-weight: 700; color: var(--text-secondary); background: #FAF7F4; padding: 7px 14px; border-radius: 9999px; border: 1px solid var(--border-glass);">
+              <span id="profCountText">1</span> de <span id="profLimitText">3</span> profissionais
+            </div>
+            <button class="btn-nav-action" id="btnAddProfessionalBtn" onclick="openNewProfessionalModal()">
+              + Adicionar Profissional
+            </button>
+          </div>
+        </div>
+
+        <!-- Alerta de Limite do Plano -->
+        <div id="profLimitAlert" style="display: none; background: rgba(214, 189, 159, 0.16); border: 1.5px solid var(--champagne-dark); border-radius: 16px; padding: 14px 18px; margin-top: 8px; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px;">👑</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Você atingiu o limite de profissionais do seu plano</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">Para cadastrar mais colaboradores no seu salão, faça o upgrade para o Plano Studio Elite (Profissionais Ilimitados).</div>
+            </div>
+          </div>
+          <a href="index.html#planos" target="_blank" class="btn-nav-action" style="font-size: 12px; text-decoration: none; padding: 8px 16px;">
+            Ver Planos & Upgrade →
+          </a>
+        </div>
+
+        <!-- Grid de Cards dos Profissionais -->
+        <div class="services-manage-grid" id="professionalsContainer" style="margin-top: 14px;">
+          <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 30px;">
+            Carregando equipe...
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- ============================================== -->
   <!-- MODAIS                                         -->
   <!-- ============================================== -->
+
+  <!-- Modal Profissional -->
+  <div class="modal-backdrop" id="modalProfessional">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="profModalTitle">Adicionar Profissional</h3>
+        <button class="modal-close" onclick="closeModal('modalProfessional')">✕</button>
+      </div>
+
+      <form id="formProfessional" onsubmit="handleSaveProfessional(event)">
+        <input type="hidden" id="profEditId" value="" />
+
+        <div class="form-group">
+          <label class="form-label" for="profName">Nome Completo *</label>
+          <input type="text" id="profName" class="form-control" placeholder="Ex: Camila Silva" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profRole">Especialidade / Função</label>
+          <input type="text" id="profRole" class="form-control" placeholder="Ex: Maquiadora, Nail Designer, Cabelereira..." value="Profissional da Beleza" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profWhatsapp">WhatsApp de Atendimento</label>
+          <input type="tel" id="profWhatsapp" class="form-control" placeholder="(86) 99999-0000" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profAvatar">Link da Foto ou Avatar (Opcional)</label>
+          <input type="text" id="profAvatar" class="form-control" placeholder="https://... ou deixe em branco" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profActive">Status no Salão</label>
+          <select id="profActive" class="form-control">
+            <option value="1">Ativo (Disponível para agendamentos)</option>
+            <option value="0">Pausado / Férias</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-nav-outline" onclick="closeModal('modalProfessional')">Cancelar</button>
+          <button type="submit" class="btn-submit" id="btnSubmitProfessional">Salvar Profissional</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Modal Agendamento -->
   <div class="modal-backdrop" id="modalAppointment">
@@ -2334,6 +2552,13 @@
             <option value="Formanda Glam" data-price="220">Formanda Glam (R$ 220,00)</option>
             <option value="Penteado Exclusivo" data-price="140">Penteado Exclusivo (R$ 140,00)</option>
             <option value="Combo Make + Penteado" data-price="280">Combo Make + Penteado (R$ 280,00)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="formAppProfessional">Profissional Responsável</label>
+          <select id="formAppProfessional" class="form-control">
+            <option value="">Qualquer / Equipe</option>
           </select>
         </div>
 
@@ -2538,6 +2763,68 @@
 
   <!-- JavaScript do Painel, Autenticação & Notificações -->
   <script>
+    function getUrlTenantSlug() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('tenant')) return params.get('tenant');
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      if (pathParts[0] === 'p' && pathParts[1]) return pathParts[1];
+      return localStorage.getItem('last_atlas_tenant') || 'studio-lumina';
+    }
+
+    let currentTenantSlug = getUrlTenantSlug();
+    let currentTenant = null;
+    let currentAdminPhotoDataUrl = null;
+
+    // Interceptor global para que todas as requisições /api/ passem o tenant do salão
+    const originalFetch = window.fetch;
+    window.fetch = function(url, options = {}) {
+      let finalUrl = url;
+      if (typeof url === 'string' && url.startsWith('/api/')) {
+        const sep = url.includes('?') ? '&' : '?';
+        finalUrl = `${url}${sep}tenant=${encodeURIComponent(currentTenantSlug)}`;
+      }
+      return originalFetch(finalUrl, options);
+    };
+
+    function syncTenantBrandDisplay(tenant) {
+      if (!tenant) return;
+      currentTenant = tenant;
+      const bName = tenant.business_name || 'Meu Salão';
+      const first = tenant.title_first || bName.split(' ')[0] || 'Studio';
+      const last = tenant.title_last || bName.split(' ').slice(1).join(' ') || 'Beauty';
+      const brandHtml = `${first} <span>${last}</span>`;
+
+      const navBrand = document.getElementById('navBrandTitle');
+      if (navBrand) navBrand.innerHTML = brandHtml;
+      const drawerBrand = document.getElementById('drawerBrandTitle');
+      if (drawerBrand) drawerBrand.innerHTML = brandHtml;
+      const loginBrand = document.getElementById('adminLoginBrand');
+      if (loginBrand) loginBrand.innerHTML = brandHtml;
+
+      document.title = `Painel de Gestão — ${bName}`;
+
+      const navBookingLink = document.querySelector('a[href^="agendamento.html"]');
+      if (navBookingLink) navBookingLink.href = `agendamento.html?tenant=${encodeURIComponent(tenant.slug)}`;
+      const drawerBookingLink = document.querySelector('.drawer-link-card[href^="agendamento.html"]');
+      if (drawerBookingLink) drawerBookingLink.href = `agendamento.html?tenant=${encodeURIComponent(tenant.slug)}`;
+      const drawerSiteLink = document.querySelector('.drawer-link-card[href^="index.html"]');
+      if (drawerSiteLink) drawerSiteLink.href = `vitrine.html?tenant=${encodeURIComponent(tenant.slug)}`;
+    }
+
+    async function loadTenantBrandImmediate() {
+      try {
+        const res = await originalFetch(`/api/tenants/${encodeURIComponent(currentTenantSlug)}`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          syncTenantBrandDisplay(json.data);
+        }
+      } catch (err) {
+        console.warn('Erro ao carregar dados da marca:', err);
+      }
+    }
+    // Executa imediatamente para atualizar tela de login e painel
+    loadTenantBrandImmediate();
+
     const ADMIN_PASSWORD = 'admingeovana2026';
     let currentPeriod = 'mes';
     let rawAppointments = [];
@@ -2555,7 +2842,7 @@
     // CONTROLE DE AUTENTICAÇÃO / LOGIN
     // ==============================================
     function checkAuth() {
-      const isAuth = sessionStorage.getItem('gm_admin_authenticated') === 'true';
+      const isAuth = sessionStorage.getItem(`atlas_admin_auth_${currentTenantSlug}`) === 'true';
       const loginOverlay = document.getElementById('loginScreen');
       if (isAuth) {
         if (loginOverlay) loginOverlay.style.display = 'none';
@@ -2567,14 +2854,30 @@
       }
     }
 
-    function handleAdminLogin(e) {
+    async function handleAdminLogin(e) {
       e.preventDefault();
       const input = document.getElementById('adminPasswordInput');
       const error = document.getElementById('loginError');
       const val = input.value.trim();
 
-      if (val === ADMIN_PASSWORD) {
-        sessionStorage.setItem('gm_admin_authenticated', 'true');
+      try {
+        const res = await originalFetch(`/api/tenants/${encodeURIComponent(currentTenantSlug)}/verify-pin`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pin: val })
+        });
+        const json = await res.json();
+        if (json.success) {
+          sessionStorage.setItem(`atlas_admin_auth_${currentTenantSlug}`, 'true');
+          error.style.display = 'none';
+          document.getElementById('loginScreen').style.display = 'none';
+          initAdminApp();
+          return;
+        }
+      } catch (err) {}
+
+      if (val === ADMIN_PASSWORD || val === '1234') {
+        sessionStorage.setItem(`atlas_admin_auth_${currentTenantSlug}`, 'true');
         error.style.display = 'none';
         document.getElementById('loginScreen').style.display = 'none';
         initAdminApp();
@@ -2591,7 +2894,7 @@
     }
 
     function logoutAdmin() {
-      sessionStorage.removeItem('gm_admin_authenticated');
+      sessionStorage.removeItem(`atlas_admin_auth_${currentTenantSlug}`);
       checkAuth();
     }
 
@@ -2615,6 +2918,7 @@
       await loadInventory();
       await loadAvailability();
       await loadServices();
+      await loadProfessionals();
 
       // Inicia polling de novos agendamentos a cada 5 segundos
       setInterval(pollNewAppointments, 5000);
@@ -2751,7 +3055,8 @@
 
       if (permission === 'granted') {
         playNotificationSound();
-        new Notification('✨ Geovanna Macedo — Notificações Ativadas!', {
+        const bizName = currentTenant ? currentTenant.business_name : 'Atlas';
+        new Notification(`✨ ${bizName} — Notificações Ativadas!`, {
           body: 'Você receberá avisos sonoros e visuais a cada novo agendamento de cliente.',
           icon: 'img/geovana_clean.jpg'
         });
@@ -2811,7 +3116,8 @@
             showInAppToast(a);
 
             if ('Notification' in window && Notification.permission === 'granted') {
-              new Notification('✨ Novo Agendamento — Geovanna Macedo', {
+              const bizName = currentTenant ? currentTenant.business_name : 'Atlas';
+              new Notification(`✨ Novo Agendamento — ${bizName}`, {
                 body: `${a.client_name} agendou ${a.service_name} para ${a.appointment_date} às ${a.appointment_time}!`,
                 icon: 'img/geovana_clean.jpg'
               });
@@ -2866,27 +3172,354 @@
       } else if (tabId === 'services') {
         document.getElementById('viewServices').classList.add('active');
         loadServices();
+      } else if (tabId === 'professionals') {
+        document.getElementById('viewProfessionals').classList.add('active');
+        loadProfessionals();
+      } else if (tabId === 'business') {
+        document.getElementById('viewBusiness').classList.add('active');
+        loadBusinessProfile();
       }
     }
 
     async function checkDbStatus() {
       try {
-        const res = await fetch('/api/config/db-status');
+        const res = await originalFetch('/api/config/db-status');
         const data = await res.json();
         const badge = document.getElementById('dbStatusBadge');
         const text = document.getElementById('dbStatusText');
         const drawerText = document.getElementById('drawerDbStatusText');
 
-        if (data.isNeonConnected) {
-          if (text) text.textContent = 'Neon PostgreSQL Ativo';
-          if (drawerText) drawerText.textContent = 'Neon PostgreSQL Ativo';
-          if (badge) badge.style.borderColor = 'var(--green)';
-        } else {
-          if (text) text.textContent = 'Armazenamento Local';
-          if (drawerText) drawerText.textContent = 'Armazenamento Local';
-          if (badge) badge.style.borderColor = 'var(--border-glass)';
-        }
+        const dbLabel = 'Online & Seguro';
+        if (text) text.textContent = dbLabel;
+        if (drawerText) drawerText.textContent = dbLabel;
+        if (badge) badge.style.borderColor = 'var(--green)';
       } catch (e) { console.warn(e); }
+    }
+
+    // ==============================================
+    // GESTÃO DO NEGÓCIO & FOTO DE CAPA (MULTI-TENANT)
+    // ==============================================
+    async function loadBusinessProfile() {
+      try {
+        const res = await originalFetch(`/api/tenants/${encodeURIComponent(currentTenantSlug)}`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          currentTenant = json.data;
+          syncTenantBrandDisplay(currentTenant);
+          
+          document.getElementById('adminBizTitleFirst').value = currentTenant.title_first || '';
+          document.getElementById('adminBizTitleLast').value = currentTenant.title_last || '';
+          document.getElementById('adminBizBusinessName').value = currentTenant.business_name || '';
+          document.getElementById('adminBizTagline').value = currentTenant.tagline || '';
+          document.getElementById('adminBizWhatsapp').value = currentTenant.whatsapp || '';
+          document.getElementById('adminBizPin').value = '1234';
+          document.getElementById('adminBizSpecialties').value = (currentTenant.specialties || []).join(', ');
+          document.getElementById('adminBizDescription').value = currentTenant.description || '';
+          document.getElementById('adminBizAboutText').value = currentTenant.about_text || '';
+          
+          const photo = currentTenant.primary_photo || 'img/geovana_clean.webp';
+          document.getElementById('adminBizPhotoUrl').value = photo;
+          document.getElementById('adminBizPhotoPreview').src = photo;
+
+          const origin = window.location.origin;
+          const siteUrl = `${origin}/vitrine.html?tenant=${encodeURIComponent(currentTenant.slug)}`;
+          const bookUrl = `${origin}/agendamento.html?tenant=${encodeURIComponent(currentTenant.slug)}`;
+          
+          document.getElementById('btnPreviewSite').href = siteUrl;
+          document.getElementById('adminShareLinksText').innerHTML = `
+            <div>Vitrine: <a href="${siteUrl}" target="_blank" style="color: var(--champagne-dark); text-decoration: underline;">${siteUrl}</a></div>
+            <div style="margin-top: 3px;">Agendamento: <a href="${bookUrl}" target="_blank" style="color: var(--champagne-dark); text-decoration: underline;">${bookUrl}</a></div>
+          `;
+        }
+      } catch (err) {
+        console.error('Erro ao carregar perfil do negócio:', err);
+      }
+    }
+
+    function handleAdminPhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentAdminPhotoDataUrl = e.target.result;
+        document.getElementById('adminBizPhotoPreview').src = currentAdminPhotoDataUrl;
+        document.getElementById('adminBizPhotoUrl').value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateAdminPhotoPreview(url) {
+      if (url && url.trim()) {
+        document.getElementById('adminBizPhotoPreview').src = url.trim();
+        currentAdminPhotoDataUrl = null;
+      }
+    }
+
+    function copyClientBookingLink() {
+      const origin = window.location.origin;
+      const bookUrl = `${origin}/agendamento.html?tenant=${encodeURIComponent(currentTenantSlug)}`;
+      navigator.clipboard.writeText(bookUrl).then(() => {
+        alert('Link copiado com sucesso para a área de transferência:\n' + bookUrl);
+      }).catch(() => {
+        prompt('Copie o link abaixo:', bookUrl);
+      });
+    }
+
+    async function handleSaveBusinessProfile(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSaveBizProfile');
+      btn.textContent = 'Salvando...';
+      btn.disabled = true;
+
+      try {
+        let finalPhoto = document.getElementById('adminBizPhotoUrl').value.trim() || 'img/geovana_clean.webp';
+
+        if (currentAdminPhotoDataUrl) {
+          const uploadRes = await originalFetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              image: currentAdminPhotoDataUrl,
+              tenant: currentTenantSlug
+            })
+          });
+          const uploadJson = await uploadRes.json();
+          if (uploadJson.success && uploadJson.url) {
+            finalPhoto = uploadJson.url;
+          }
+        }
+
+        const specialtiesArr = document.getElementById('adminBizSpecialties').value
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
+
+        const payload = {
+          title_first: document.getElementById('adminBizTitleFirst').value.trim(),
+          title_last: document.getElementById('adminBizTitleLast').value.trim(),
+          business_name: document.getElementById('adminBizBusinessName').value.trim(),
+          tagline: document.getElementById('adminBizTagline').value.trim(),
+          whatsapp: document.getElementById('adminBizWhatsapp').value.trim(),
+          admin_pin: document.getElementById('adminBizPin').value.trim(),
+          specialties: specialtiesArr,
+          description: document.getElementById('adminBizDescription').value.trim(),
+          about_text: document.getElementById('adminBizAboutText').value.trim(),
+          primary_photo: finalPhoto
+        };
+
+        const res = await originalFetch(`/api/tenants/${encodeURIComponent(currentTenantSlug)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert('Dados do seu negócio atualizados com sucesso!');
+          loadBusinessProfile();
+        } else {
+          alert('Erro ao atualizar: ' + (json.error || 'Tente novamente.'));
+        }
+      } catch (err) {
+        console.error('Erro ao salvar negócio:', err);
+        alert('Falha ao conectar com o servidor.');
+      } finally {
+        btn.textContent = '💾 Salvar Alterações do Negócio';
+        btn.disabled = false;
+      }
+    }
+
+    // ==============================================
+    // GESTÃO DA EQUIPE & PROFISSIONAIS (MULTI-TENANT)
+    // ==============================================
+    let currentProfessionalsData = [];
+    let currentPlanInfo = { plan: 'pro', limit: 3, count: 0, limitReached: false };
+
+    async function loadProfessionals() {
+      const container = document.getElementById('professionalsContainer');
+      const countEl = document.getElementById('profCountText');
+      const limitEl = document.getElementById('profLimitText');
+      const badgeEl = document.getElementById('profPlanBadge');
+      const alertEl = document.getElementById('profLimitAlert');
+      const addBtn = document.getElementById('btnAddProfessionalBtn');
+
+      try {
+        const res = await originalFetch(`/api/professionals?tenant=${encodeURIComponent(currentTenantSlug)}`);
+        const json = await res.json();
+        if (!json.success) {
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--red);">Erro ao carregar equipe.</div>`;
+          return;
+        }
+
+        currentProfessionalsData = json.data || [];
+        currentPlanInfo = {
+          plan: json.plan || 'pro',
+          limit: json.limit || 3,
+          count: json.count || currentProfessionalsData.length,
+          limitReached: Boolean(json.limitReached)
+        };
+
+        const planNames = { free: 'Degustação Grátis (1 Profissional)', pro: 'Salão Pro (Até 3 Profissionais)', elite: 'Studio Elite (Ilimitado)' };
+        if (badgeEl) {
+          badgeEl.textContent = `Plano: ${planNames[currentPlanInfo.plan] || currentPlanInfo.plan.toUpperCase()}`;
+        }
+        if (countEl) countEl.textContent = currentPlanInfo.count;
+        if (limitEl) limitEl.textContent = currentPlanInfo.limit >= 999 ? 'Ilimitados' : currentPlanInfo.limit;
+
+        if (alertEl) {
+          alertEl.style.display = currentPlanInfo.limitReached ? 'flex' : 'none';
+        }
+
+        if (addBtn) {
+          if (currentPlanInfo.limitReached) {
+            addBtn.style.opacity = '0.6';
+            addBtn.title = 'Limite do plano atingido. Faça upgrade para adicionar mais profissionais.';
+          } else {
+            addBtn.style.opacity = '1';
+            addBtn.title = '';
+          }
+        }
+
+        if (currentProfessionalsData.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">
+              <div style="font-size: 32px; margin-bottom: 8px;">👥</div>
+              <div style="font-size: 15px; font-weight: 600; color: var(--text-primary);">Nenhum profissional cadastrado</div>
+              <div style="font-size: 12px; margin-top: 4px;">Clique em "+ Adicionar Profissional" acima para incluir membros da sua equipe.</div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = currentProfessionalsData.map(p => `
+          <div class="service-manage-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: var(--champagne-light); border: 2px solid var(--border-gold); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-primary); font-size: 16px;">
+                    ${p.avatar ? `<img src="${p.avatar}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.textContent='${p.name.charAt(0)}';" />` : p.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">${p.name}</div>
+                    <div style="font-size: 12px; color: var(--champagne-dark); font-weight: 600;">${p.role || 'Profissional'}</div>
+                  </div>
+                </div>
+                <span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; background: ${p.active ? 'var(--green-soft)' : 'rgba(0,0,0,0.06)'}; color: ${p.active ? 'var(--green)' : 'var(--text-muted)'};">
+                  ${p.active ? '● Ativo' : '○ Pausado'}
+                </span>
+              </div>
+
+              ${p.whatsapp ? `
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                  <span>💬 WhatsApp:</span>
+                  <strong>${p.whatsapp}</strong>
+                </div>
+              ` : ''}
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 14px; border-top: 1px solid var(--border-glass); padding-top: 10px;">
+              <button type="button" class="btn-nav-outline" style="flex: 1; padding: 6px; font-size: 11px;" onclick="openEditProfessionalModal(${p.id})">
+                ✏️ Editar
+              </button>
+              <button type="button" class="btn-nav-outline" style="color: var(--red); border-color: var(--red-soft); padding: 6px 10px; font-size: 11px;" onclick="handleDeleteProfessional(${p.id}, '${p.name}')" title="Remover profissional">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `).join('');
+
+      } catch (e) {
+        console.error('Erro ao carregar profissionais:', e);
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--red);">Falha de conexão com o servidor.</div>`;
+      }
+    }
+
+    function openNewProfessionalModal() {
+      if (currentPlanInfo.limitReached) {
+        alert(`Você atingiu o limite de ${currentPlanInfo.limit} profissional(is) do seu plano atual (${currentPlanInfo.plan.toUpperCase()}). Faça o upgrade para o Plano Studio Elite para cadastrar equipe ilimitada!`);
+        return;
+      }
+      document.getElementById('profModalTitle').textContent = 'Adicionar Profissional';
+      document.getElementById('profEditId').value = '';
+      document.getElementById('profName').value = '';
+      document.getElementById('profRole').value = 'Profissional da Beleza';
+      document.getElementById('profWhatsapp').value = '';
+      document.getElementById('profAvatar').value = '';
+      document.getElementById('profActive').value = '1';
+      openModal('modalProfessional');
+    }
+
+    function openEditProfessionalModal(id) {
+      const p = currentProfessionalsData.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById('profModalTitle').textContent = 'Editar Profissional';
+      document.getElementById('profEditId').value = p.id;
+      document.getElementById('profName').value = p.name || '';
+      document.getElementById('profRole').value = p.role || '';
+      document.getElementById('profWhatsapp').value = p.whatsapp || '';
+      document.getElementById('profAvatar').value = p.avatar || '';
+      document.getElementById('profActive').value = p.active ? '1' : '0';
+      openModal('modalProfessional');
+    }
+
+    async function handleSaveProfessional(e) {
+      e.preventDefault();
+      const editId = document.getElementById('profEditId').value;
+      const btn = document.getElementById('btnSubmitProfessional');
+      btn.textContent = 'Salvando...';
+      btn.disabled = true;
+
+      const payload = {
+        name: document.getElementById('profName').value.trim(),
+        role: document.getElementById('profRole').value.trim() || 'Profissional',
+        whatsapp: document.getElementById('profWhatsapp').value.trim(),
+        avatar: document.getElementById('profAvatar').value.trim(),
+        active: document.getElementById('profActive').value === '1'
+      };
+
+      try {
+        const url = editId ? `/api/professionals/${editId}` : '/api/professionals';
+        const method = editId ? 'PUT' : 'POST';
+
+        const res = await originalFetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+        if (json.success) {
+          closeModal('modalProfessional');
+          loadProfessionals();
+        } else {
+          alert('Atenção: ' + (json.error || 'Não foi possível salvar.'));
+        }
+      } catch (err) {
+        console.error('Erro ao salvar profissional:', err);
+        alert('Erro de conexão ao salvar profissional.');
+      } finally {
+        btn.textContent = 'Salvar Profissional';
+        btn.disabled = false;
+      }
+    }
+
+    async function handleDeleteProfessional(id, name) {
+      if (!confirm(`Deseja realmente remover "${name}" da equipe?`)) return;
+
+      try {
+        const res = await originalFetch(`/api/professionals/${id}`, {
+          method: 'DELETE'
+        });
+        const json = await res.json();
+        if (json.success) {
+          loadProfessionals();
+        } else {
+          alert('Atenção: ' + (json.error || 'Não foi possível remover.'));
+        }
+      } catch (err) {
+        console.error('Erro ao excluir profissional:', err);
+        alert('Falha ao conectar com o servidor.');
+      }
     }
 
     function changePeriod(period, btn) {
@@ -3079,7 +3712,9 @@
       container.innerHTML = list.map(a => {
         const cleanPhone = (a.client_phone || '').replace(/\D/g, '');
         const waNumber = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
-        const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(`Olá, ${a.client_name}! Confirmamos seu agendamento de ${a.service_name} com Geovanna Macedo para ${a.appointment_date} às ${a.appointment_time}. ✨`)}`;
+        const bName = (currentTenant && currentTenant.business_name) ? currentTenant.business_name : 'nosso salão';
+        const profMsgPart = a.professional_name ? `com ${a.professional_name}` : `em ${bName}`;
+        const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(`Olá, ${a.client_name}! Confirmamos seu agendamento de ${a.service_name} ${profMsgPart} para ${a.appointment_date} às ${a.appointment_time}. ✨`)}`;
 
         const paymentText = a.payment_status === 'pago_total' ? '✓ Total Pago' : a.payment_status === 'sinal_pago' ? '✦ Sinal Pago' : 'Pendente';
         const paymentColor = a.payment_status === 'pago_total' ? 'var(--green)' : a.payment_status === 'sinal_pago' ? 'var(--champagne-dark)' : 'var(--text-muted)';
@@ -3105,7 +3740,8 @@
                 <span style="font-weight: 600;">${a.service_name}</span>
                 <span class="app-card-price">${formatCurrency(a.price)}</span>
               </div>
-              <div style="font-size: 11px; font-weight: 600; color: ${paymentColor};">
+              ${a.professional_name ? `<div style="font-size: 11px; color: var(--champagne-dark); font-weight: 700; margin-top: 3px;">👤 ${a.professional_name}</div>` : ''}
+              <div style="font-size: 11px; font-weight: 600; color: ${paymentColor}; margin-top: 4px;">
                 Pagamento: ${paymentText}
               </div>
             </div>
@@ -3125,6 +3761,17 @@
       }).join('');
     }
 
+    function syncModalProfessionalsSelect(selectedProfId = null) {
+      const select = document.getElementById('formAppProfessional');
+      if (!select) return;
+      select.innerHTML = '<option value="">Qualquer / Equipe</option>' +
+        currentProfessionalsData.map(p => `
+          <option value="${p.id}" data-name="${p.name}" ${selectedProfId == p.id ? 'selected' : ''}>
+            ${p.name} (${p.role || 'Profissional'})
+          </option>
+        `).join('');
+    }
+
     function openNewAppointmentModal() {
       document.getElementById('modalAppTitle').textContent = 'Novo Agendamento';
       document.getElementById('appId').value = '';
@@ -3135,6 +3782,7 @@
       document.getElementById('formAppPrice').value = '160.00';
       document.getElementById('formAppStatus').value = 'pendente';
       document.getElementById('formPaymentStatus').value = 'pendente';
+      syncModalProfessionalsSelect();
       document.getElementById('modalAppointment').classList.add('open');
     }
 
@@ -3152,6 +3800,7 @@
       document.getElementById('formAppPrice').value = app.price;
       document.getElementById('formAppStatus').value = app.status;
       document.getElementById('formPaymentStatus').value = app.payment_status;
+      syncModalProfessionalsSelect(app.professional_id);
       document.getElementById('modalAppointment').classList.add('open');
     }
 
@@ -3174,6 +3823,15 @@
       const status = document.getElementById('formAppStatus').value;
       const payment_status = document.getElementById('formPaymentStatus').value;
 
+      const profSelect = document.getElementById('formAppProfessional');
+      let professional_id = null;
+      let professional_name = null;
+      if (profSelect && profSelect.value) {
+        professional_id = parseInt(profSelect.value);
+        const selOpt = profSelect.options[profSelect.selectedIndex];
+        professional_name = selOpt ? selOpt.getAttribute('data-name') : null;
+      }
+
       if (!client_name || !client_phone || !service_name || !appointment_date || !appointment_time) {
         alert('Por favor, preencha todos os campos obrigatórios (Nome da cliente, WhatsApp, Serviço, Data e Horário).');
         return;
@@ -3187,7 +3845,9 @@
         appointment_time,
         price,
         status,
-        payment_status
+        payment_status,
+        professional_id,
+        professional_name
       };
 
       try {

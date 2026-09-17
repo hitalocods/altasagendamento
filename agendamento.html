@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Agendamento — Geovanna Macedo</title>
+    <title>Agendamento — Atlas</title>
     <meta name="description"
-        content="Agende seu horário com Geovanna Macedo. Escolha o serviço, data e horário ideais." />
+        content="Agende seu horário online. Escolha o serviço, profissional, data e horário ideais." />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -204,7 +204,75 @@
         }
     }
 
-    /* Step 0: Cartões de Serviços Responsivos */
+    /* Step 0: Cartões de Profissionais */
+    .prof-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: clamp(14px, 3.5vw, 18px) clamp(14px, 4vw, 20px);
+        margin-bottom: 12px;
+        background: #FFFFFF;
+        border: 1.5px solid var(--border-glass);
+        border-radius: clamp(16px, 3.5vw, 22px);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        gap: 14px;
+        box-shadow: 0 4px 16px rgba(168, 134, 97, 0.05);
+    }
+    .prof-card:hover {
+        border-color: var(--champagne-gold);
+        background: #FAF7F4;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(214, 189, 159, 0.2);
+    }
+    .prof-card.selected {
+        border-color: var(--champagne-dark);
+        background: linear-gradient(135deg, #FFFFFF 0%, #FAF4F0 100%);
+        box-shadow: 0 8px 26px rgba(225, 193, 182, 0.4);
+    }
+    .prof-avatar-wrapper {
+        width: clamp(48px, 10vw, 54px);
+        height: clamp(48px, 10vw, 54px);
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid var(--champagne-light);
+        background: var(--champagne-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 3px 10px rgba(168, 134, 97, 0.12);
+    }
+    .prof-avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .prof-avatar-initials {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    .prof-card-info {
+        flex: 1;
+        min-width: 0;
+    }
+    .prof-card-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(20px, 4.5vw, 23px);
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.15;
+        margin-bottom: 2px;
+    }
+    .prof-card-role {
+        font-size: clamp(12px, 2.6vw, 13px);
+        color: var(--champagne-dark);
+        font-weight: 600;
+    }
+
+    /* Cartões de Serviços Responsivos */
     .service-card {
         display: flex;
         justify-content: space-between;
@@ -240,6 +308,35 @@
         color: var(--text-primary);
         margin-bottom: 2px;
         line-height: 1.15;
+    }
+
+    .prof-pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: #FFFFFF;
+        border: 1px solid var(--border-gold);
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.25s ease;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .prof-pill-btn:hover {
+        border-color: var(--champagne-dark);
+        color: var(--text-primary);
+        background: #FAF7F4;
+    }
+    .prof-pill-btn.selected {
+        background: linear-gradient(135deg, #FAF7F4, #EAD8C3);
+        border-color: var(--champagne-dark);
+        color: var(--text-primary);
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(214, 189, 159, 0.35);
     }
 
     .service-card.selected .svc-title {
@@ -656,11 +753,11 @@
 
     <main class="booking-card">
         <header class="top-header">
-            <a href="index.html" class="pill-back-link">
+            <a href="index.html" class="pill-back-link" id="linkBackHome">
                 ← Início
             </a>
-            <div class="brand-pill">
-                Geovanna Macedo
+            <div class="brand-pill" id="headerBrandPill">
+                Agendamento Online
             </div>
         </header>
 
@@ -669,11 +766,12 @@
             <div class="step-pill"></div>
             <div class="step-pill"></div>
             <div class="step-pill"></div>
+            <div class="step-pill"></div>
         </nav>
 
         <div class="step-meta" id="stepHeader">
-            <span class="step-pill-badge" id="stepTag">Etapa 1 de 4</span>
-            <h1 class="step-main-title" id="stepTitle">Escolha o Serviço</h1>
+            <span class="step-pill-badge" id="stepTag">Etapa 1 de 5 — Profissional</span>
+            <h1 class="step-main-title" id="stepTitle">Escolha o Profissional</h1>
         </div>
 
         <!-- Conteúdo da Etapa -->
@@ -691,7 +789,19 @@
     </main>
 
     <script>
-        const WHATSAPP_PHONE = '5586981692975';
+        function getUrlTenantSlug() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('tenant')) return params.get('tenant');
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            if (pathParts[0] === 'p' && pathParts[1]) return pathParts[1];
+            return localStorage.getItem('last_atlas_tenant') || 'studio-lumina';
+        }
+
+        let currentTenantSlug = getUrlTenantSlug();
+        let currentTenant = null;
+        let currentBusinessName = 'Agendamento Online';
+        let WHATSAPP_PHONE = '5586981692975';
+        let PROFESSIONALS = [];
 
         let SERVICES = [
             { id: "social", label: "Maquiagem Social", dur: "1h", price: 160.00, priceFormatted: "R$ 160,00" },
@@ -779,7 +889,25 @@
 
         async function initAvailability() {
             try {
-                const svcRes = await fetch('/api/services');
+                // Carregar Informações do Negócio (Tenant)
+                const tenantRes = await fetch(`/api/tenants/${encodeURIComponent(currentTenantSlug)}`);
+                const tenantJson = await tenantRes.json();
+                if (tenantJson.success && tenantJson.data) {
+                    currentTenant = tenantJson.data;
+                    currentBusinessName = `${currentTenant.title_first || ''} ${currentTenant.title_last || ''}`.trim() || currentTenant.business_name;
+                    document.title = `Agendamento — ${currentBusinessName}`;
+                    const brandPill = document.getElementById('headerBrandPill');
+                    if (brandPill) brandPill.textContent = currentBusinessName;
+                    
+                    const backLink = document.getElementById('linkBackHome');
+                    if (backLink) backLink.href = `index.html?tenant=${encodeURIComponent(currentTenantSlug)}`;
+
+                    if (currentTenant.whatsapp) {
+                        WHATSAPP_PHONE = currentTenant.whatsapp;
+                    }
+                }
+
+                const svcRes = await fetch(`/api/services?tenant=${encodeURIComponent(currentTenantSlug)}`);
                 const svcJson = await svcRes.json();
                 if (svcJson.success && Array.isArray(svcJson.data) && svcJson.data.length > 0) {
                     SERVICES = svcJson.data.map(s => ({
@@ -795,7 +923,7 @@
                     showPricesConfig = svcJson.show_prices;
                 }
 
-                const res = await fetch('/api/availability');
+                const res = await fetch(`/api/availability?tenant=${encodeURIComponent(currentTenantSlug)}`);
                 const json = await res.json();
                 if (json.success && json.data) {
                     if (json.data.active_days && Array.isArray(json.data.active_days)) {
@@ -811,6 +939,18 @@
                         TIMES = json.data.custom_times.sort();
                     }
                 }
+
+                // Carregar Profissionais da Equipe
+                const profRes = await fetch(`/api/professionals?tenant=${encodeURIComponent(currentTenantSlug)}`);
+                const profJson = await profRes.json();
+                if (profJson.success && Array.isArray(profJson.data)) {
+                    PROFESSIONALS = profJson.data.filter(p => p.active);
+                    if (PROFESSIONALS.length === 1 && !state.professional_id) {
+                        state.professional_id = PROFESSIONALS[0].id;
+                        state.professional_name = PROFESSIONALS[0].name;
+                        state.professional_selected = true;
+                    }
+                }
             } catch (e) {
                 console.warn('Usando serviços e horários padrão de contingência:', e);
             }
@@ -818,10 +958,13 @@
             render();
         }
 
-        const STEP_NAMES = ["Serviço", "Data", "Horário", "Seus Dados"];
+        const STEP_NAMES = ["Profissional", "Serviço", "Data", "Horário", "Seus Dados"];
 
         const state = {
             step: 0,
+            professional_id: null,
+            professional_name: 'Qualquer Especialista Disponível',
+            professional_selected: false,
             service: null,
             date: null,
             time: null,
@@ -829,6 +972,13 @@
             phone: "",
             done: false
         };
+
+        function selectProfessional(id, name) {
+            state.professional_id = id;
+            state.professional_name = name;
+            state.professional_selected = true;
+            render();
+        }
 
         function updateIndicator() {
             const bars = document.querySelectorAll('.step-pill');
@@ -849,12 +999,13 @@
                 return;
             }
 
-            stepTag.textContent = `Etapa ${state.step + 1} de 4 — ${STEP_NAMES[state.step]}`;
+            stepTag.textContent = `Etapa ${state.step + 1} de 5 — ${STEP_NAMES[state.step]}`;
 
-            if (state.step === 0) stepTitle.textContent = "Escolha o Serviço";
-            else if (state.step === 1) stepTitle.textContent = "Escolha a Data";
-            else if (state.step === 2) stepTitle.textContent = "Escolha o Horário";
-            else if (state.step === 3) stepTitle.textContent = "Seus Dados";
+            if (state.step === 0) stepTitle.textContent = "Escolha o Profissional";
+            else if (state.step === 1) stepTitle.textContent = "Escolha o Serviço";
+            else if (state.step === 2) stepTitle.textContent = "Escolha a Data";
+            else if (state.step === 3) stepTitle.textContent = "Escolha o Horário";
+            else if (state.step === 4) stepTitle.textContent = "Seus Dados";
 
             btnBack.disabled = state.step === 0;
 
@@ -864,18 +1015,19 @@
                 btnNext.classList.remove('ready');
             }
 
-            btnNext.textContent = state.step === 3 ? "Confirmar Agendamento" : "Continuar";
+            btnNext.textContent = state.step === 4 ? "Confirmar Agendamento" : "Continuar";
         }
 
         function checkCanProceed() {
-            if (state.step === 0) return Boolean(state.service);
-            if (state.step === 1) return Boolean(state.date);
-            if (state.step === 2) {
+            if (state.step === 0) return Boolean(state.professional_selected || state.professional_id !== null || PROFESSIONALS.length <= 1);
+            if (state.step === 1) return Boolean(state.service);
+            if (state.step === 2) return Boolean(state.date);
+            if (state.step === 3) {
                 const dt = getSelectedDate();
                 if (dt && (dt.dayNum === 0 || dt.dayNum === 6)) return true;
                 return Boolean(state.time);
             }
-            if (state.step === 3) return state.name.trim().length >= 3 && state.phone.replace(/\D/g, '').length >= 10;
+            if (state.step === 4) return state.name.trim().length >= 3 && state.phone.replace(/\D/g, '').length >= 10;
             return false;
         }
 
@@ -919,12 +1071,12 @@
             if (!checkCanProceed()) return;
 
             const dt = getSelectedDate();
-            if (state.step === 2 && dt && (dt.dayNum === 0 || dt.dayNum === 6)) {
+            if (state.step === 3 && dt && (dt.dayNum === 0 || dt.dayNum === 6)) {
                 redirectToSatSunWhatsApp();
                 return;
             }
 
-            if (state.step < 3) {
+            if (state.step < 4) {
                 state.step++;
                 render();
             } else {
@@ -950,10 +1102,13 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
+                            tenant: currentTenantSlug,
                             client_name: state.name.trim(),
                             client_phone: state.phone.trim(),
                             service_id: state.service,
                             service_name: svc ? svc.label : 'Atendimento',
+                            professional_id: state.professional_id,
+                            professional_name: state.professional_name,
                             price: priceNum,
                             appointment_date: formattedDate,
                             appointment_time: state.time || 'Sob Consulta',
@@ -989,7 +1144,7 @@
         function redirectToSatSunWhatsApp() {
             const svc = getSelectedService();
             const dt = getSelectedDate();
-            const msg = `Olá, Geovanna! Gostaria de verificar a disponibilidade de horário para o *${dt ? `${dt.dow}, ${dt.day}/${dt.month}` : 'final de semana'}* para o serviço: *${svc ? svc.label : 'Atendimento'}*. ✨`;
+            const msg = `Olá, ${currentBusinessName}! Gostaria de verificar a disponibilidade de horário para o *${dt ? `${dt.dow}, ${dt.day}/${dt.month}` : 'final de semana'}* para o serviço: *${svc ? svc.label : 'Atendimento'}*. ✨`;
             const cleanPhone = WHATSAPP_PHONE.replace(/\D/g, '');
             window.location.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
         }
@@ -998,8 +1153,10 @@
             const svc = getSelectedService();
             const dt = getSelectedDate();
             const priceText = showPricesConfig ? (svc ? svc.priceFormatted : '') : 'Sob Consulta';
+            const profLine = state.professional_name ? `✦ *Profissional:* ${state.professional_name}\n` : '';
 
-            const msg = `Olá, Geovanna! Gostaria de confirmar meu agendamento:\n\n` +
+            const msg = `Olá, ${currentBusinessName}! Gostaria de confirmar meu agendamento:\n\n` +
+                profLine +
                 `✦ *Serviço:* ${svc ? svc.label : ''}\n` +
                 `✦ *Valor:* ${priceText}\n` +
                 `✦ *Data:* ${dt ? `${dt.dow}, ${dt.day}/${dt.month}` : ''}\n` +
@@ -1033,6 +1190,7 @@
             <div class="success-body">
               <strong>${svc ? svc.label : ''}</strong><br>
               ${dt ? `${dt.dow}, ${dt.day} de ${dt.month}` : ''} às <strong>${state.time}</strong><br>
+              Profissional: <strong>${state.professional_name || 'Qualquer Disponível'}</strong><br>
               Cliente: <strong>${state.name}</strong>
             </div>
             <p style="font-size: 13px; color: var(--cream-soft); margin-bottom: 20px; line-height: 1.6;">
@@ -1052,9 +1210,81 @@
                 return;
             }
 
+            // ETAPA 1 (index 0): ESCOLHA O PROFISSIONAL
             if (state.step === 0) {
+                const isAnySelected = (state.professional_id === null && state.professional_selected) || (!state.professional_selected && PROFESSIONALS.length > 1);
+
                 container.innerHTML = `
           <div class="fade-in">
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+              Selecione com quem deseja realizar seu atendimento:
+            </p>
+
+            ${PROFESSIONALS.length > 1 ? `
+              <!-- Opção Qualquer Profissional Disponível -->
+              <div 
+                class="prof-card ${isAnySelected ? 'selected' : ''}" 
+                onclick="selectProfessional(null, 'Qualquer Especialista Disponível')"
+                role="button"
+                tabindex="0"
+              >
+                <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                  <div class="prof-avatar-wrapper" style="background: linear-gradient(135deg, #F7EDE8, #EAD8C3); border-color: var(--border-gold);">
+                    <span style="font-size: 22px;">✨</span>
+                  </div>
+                  <div class="prof-card-info">
+                    <div class="prof-card-name">Qualquer Profissional</div>
+                    <div class="prof-card-role" style="color: var(--text-muted); font-size: 12px;">Atendimento mais rápido pelo primeiro horário livre</div>
+                  </div>
+                </div>
+                <div class="radio-circle">
+                  ${isAnySelected ? '✓' : ''}
+                </div>
+              </div>
+            ` : ''}
+
+            <!-- Cards dos Profissionais da Equipe -->
+            ${PROFESSIONALS.map(p => {
+                const isSelected = state.professional_id === p.id;
+                return `
+              <div 
+                class="prof-card ${isSelected ? 'selected' : ''}" 
+                onclick="selectProfessional(${p.id}, '${p.name}')"
+                role="button"
+                tabindex="0"
+              >
+                <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                  <div class="prof-avatar-wrapper">
+                    ${p.avatar ? `
+                      <img src="${p.avatar}" alt="${p.name}" class="prof-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                      <span class="prof-avatar-initials" style="display: none;">${p.name.charAt(0).toUpperCase()}</span>
+                    ` : `
+                      <span class="prof-avatar-initials">${p.name.charAt(0).toUpperCase()}</span>
+                    `}
+                  </div>
+                  <div class="prof-card-info">
+                    <div class="prof-card-name">${p.name}</div>
+                    <div class="prof-card-role">${p.role || 'Especialista da Beleza'}</div>
+                  </div>
+                </div>
+                <div class="radio-circle">
+                  ${isSelected ? '✓' : ''}
+                </div>
+              </div>
+            `;
+            }).join('')}
+          </div>
+        `;
+            } else if (state.step === 1) {
+                // ETAPA 2 (index 1): ESCOLHA O SERVIÇO
+                container.innerHTML = `
+          <div class="fade-in">
+            ${state.professional_name ? `
+              <div style="font-size: 12px; font-weight: 700; color: var(--champagne-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                <span>👤</span> Atendimento com: <strong>${state.professional_name}</strong>
+              </div>
+            ` : ''}
+
             ${SERVICES.map(s => {
                 const displayPrice = showPricesConfig ? s.priceFormatted : 'Sob Consulta';
                 return `
@@ -1076,7 +1306,8 @@
             }).join('')}
           </div>
         `;
-            } else if (state.step === 1) {
+            } else if (state.step === 2) {
+                // ETAPA 3 (index 2): ESCOLHA A DATA
                 const monthGroups = getGroupedMonths();
                 if (currentMonthIndex >= monthGroups.length) currentMonthIndex = 0;
                 const currentGroup = monthGroups[currentMonthIndex] || { title: '', dates: [] };
@@ -1104,14 +1335,15 @@
             </div>
           </div>
         `;
-            } else if (state.step === 2) {
+            } else if (state.step === 3) {
+                // ETAPA 4 (index 3): ESCOLHA O HORÁRIO
                 const dt = getSelectedDate();
                 const isSatSun = dt && (dt.dayNum === 0 || dt.dayNum === 6);
 
                 if (isSatSun) {
                     const svc = getSelectedService();
                     const cleanPhone = WHATSAPP_PHONE.replace(/\D/g, '');
-                    const waSatSunUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Olá Geovanna! Gostaria de verificar a disponibilidade de horário para o ${dt.dow}, ${dt.day}/${dt.month} para o serviço: ${svc ? svc.label : 'Atendimento'}. ✨`)}`;
+                    const waSatSunUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Olá, ${currentBusinessName}! Gostaria de verificar a disponibilidade de horário para o ${dt.dow}, ${dt.day}/${dt.month} para o serviço: ${svc ? svc.label : 'Atendimento'}. ✨`)}`;
                     container.innerHTML = `
             <div class="fade-in" style="background: #FFFFFF; border: 1px solid var(--border-gold); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 10px 30px rgba(168,134,97,0.1);">
               <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #28E06E, #1EB956); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 14px; box-shadow: 0 6px 18px rgba(37,211,102,0.35);">📲</div>
@@ -1119,7 +1351,7 @@
                 Atendimento em ${dt.dow === 'Sáb' ? 'Sábado' : 'Domingo'}
               </h3>
               <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
-                Nos finais de semana, os horários são gerenciados de forma personalizada. Clique no botão abaixo para consultar disponibilidade diretamente no WhatsApp da Geovanna:
+                Nos finais de semana, os horários são gerenciados de forma personalizada. Clique no botão abaixo para consultar disponibilidade diretamente no WhatsApp:
               </p>
               <a href="${waSatSunUrl}" class="btn-whatsapp-pill" style="text-decoration: none;">Verificar Disponibilidade no WhatsApp →</a>
             </div>
@@ -1136,13 +1368,22 @@
             </div>
           `;
                 }
-            } else if (state.step === 3) {
+            } else if (state.step === 4) {
+                // ETAPA 5 (index 4): SEUS DADOS & CONFIRMAÇÃO
                 const svc = getSelectedService();
                 const dt = getSelectedDate();
                 const displayPrice = showPricesConfig ? (svc ? svc.priceFormatted : '') : 'Sob Consulta';
                 container.innerHTML = `
           <div class="fade-in">
             <div class="summary-box">
+              <div class="summary-item">
+                <div class="summary-icon-bubble">👤</div>
+                <div>
+                  <div class="summary-label">Profissional</div>
+                  <div class="summary-value">${state.professional_name || 'Qualquer Especialista Disponível'}</div>
+                </div>
+              </div>
+
               <div class="summary-item">
                 <div class="summary-icon-bubble">✦</div>
                 <div>
@@ -1193,7 +1434,7 @@
                   type="tel" 
                   id="clientPhone" 
                   class="rounded-input" 
-                  placeholder="(86) 99999-9999" 
+                  placeholder="(11) 99999-9999" 
                   value="${state.phone}"
                   oninput="handlePhoneInput(event)"
                   required
