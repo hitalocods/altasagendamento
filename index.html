@@ -577,7 +577,7 @@
       line-height: 1.6;
     }
 
-    /* PLANOS E PREÇOS - DESIGN REFINADO & MOBILE FIRST */
+    /* PLANOS E PREÇOS - DESIGN REFINADO & TOTALMENTE RESPONSIVO */
     .pricing-section {
       padding: clamp(50px, 8vw, 90px) clamp(16px, 4vw, 40px);
       max-width: 1200px;
@@ -585,91 +585,21 @@
       position: relative;
     }
 
-    /* Seletor rápido no Mobile (Tabs de Segmento) */
-    .pricing-mobile-nav {
-      display: flex;
-      justify-content: center;
-      gap: 4px;
-      margin: 0 auto 20px;
-      padding: 5px;
-      background: #FFFFFF;
-      border: 1px solid var(--border-gold);
-      border-radius: 9999px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-      max-width: 390px;
-      width: 100%;
-    }
-
-    @media (min-width: 992px) {
-      .pricing-mobile-nav {
-        display: none;
-      }
-    }
-
-    .pricing-mobile-tab {
-      flex: 1;
-      padding: 10px 10px;
-      border-radius: 9999px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      text-align: center;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .pricing-mobile-tab.active {
-      background: linear-gradient(135deg, #D6BD9F 0%, #B59B79 100%);
-      color: #FFFFFF;
-      box-shadow: 0 4px 14px var(--gold-glow);
-    }
-
-    /* Container dos Cards */
+    /* Grid dos 3 Planos - 3 colunas no Desktop e os 3 empilhados e visíveis no Celular */
     .pricing-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
       align-items: stretch;
-      margin-top: 10px;
+      margin-top: 36px;
+      width: 100%;
     }
 
     @media (max-width: 991px) {
       .pricing-grid {
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        gap: 16px;
-        padding: 24px 16px 28px;
-        margin-left: -16px;
-        margin-right: -16px;
-        padding-left: max(16px, calc((100vw - 350px) / 2));
-        padding-right: max(16px, calc((100vw - 350px) / 2));
-        scrollbar-width: none;
-      }
-      .pricing-grid::-webkit-scrollbar {
-        display: none;
-      }
-      .pricing-card {
-        flex: 0 0 88vw;
-        max-width: 350px;
-        scroll-snap-align: center;
-        scroll-snap-stop: always;
-      }
-    }
-
-    @media (min-width: 992px) {
-      .pricing-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 28px;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 24px;
       }
     }
 
@@ -1149,7 +1079,7 @@
   <!-- Navbar -->
   <nav class="navbar">
     <a href="/" class="nav-brand">
-      <div class="brand-sparkle">✦</div>
+      <img src="img/logo.png" alt="Atlas Agendamento" style="height: 40px; width: auto; object-fit: contain;" />
       <div class="brand-title-box">
         <div class="brand-title">Atlas <span>Agendamento</span></div>
         <div class="brand-sub">Platform for Beauty Artists</div>
@@ -1347,19 +1277,6 @@
       <p class="section-desc">
         Comece 100% gratuito para testar e escale seu faturamento conforme sua equipe e demanda crescem.
       </p>
-    </div>
-
-    <!-- Seletor Rápido de Planos no Celular -->
-    <div class="pricing-mobile-nav" id="pricingMobileNav">
-      <button type="button" class="pricing-mobile-tab" id="tabPlan0" onclick="switchPricingMobile(0)">
-        <span>1 Profissional</span>
-      </button>
-      <button type="button" class="pricing-mobile-tab active" id="tabPlan1" onclick="switchPricingMobile(1)">
-        <span>Até 3 (Pro) 👑</span>
-      </button>
-      <button type="button" class="pricing-mobile-tab" id="tabPlan2" onclick="switchPricingMobile(2)">
-        <span>Ilimitado 💎</span>
-      </button>
     </div>
 
     <div class="pricing-grid" id="pricingGrid">
@@ -1660,76 +1577,12 @@
   <script>
     let currentPhotoBase64 = null;
 
-    // Navegação e Sincronização dos Planos no Mobile
-    function switchPricingMobile(index) {
-      const card = document.getElementById('cardPlan' + index);
-      const grid = document.getElementById('pricingGrid');
-      if (card && grid) {
-        card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-      updatePricingActiveState(index);
-    }
-
-    function updatePricingActiveState(index) {
-      for (let i = 0; i < 3; i++) {
-        const tab = document.getElementById('tabPlan' + i);
-        const dot = document.getElementById('dotPlan' + i);
-        if (tab) tab.classList.toggle('active', i === index);
-        if (dot) dot.classList.toggle('active', i === index);
-      }
-    }
-
-    // Auto-detect scroll no carrossel de planos mobile
-    let isPricingScrollDebounce = null;
     window.addEventListener('DOMContentLoaded', () => {
-      const grid = document.getElementById('pricingGrid');
-      if (grid) {
-        grid.addEventListener('scroll', () => {
-          if (window.innerWidth >= 992) return;
-          clearTimeout(isPricingScrollDebounce);
-          isPricingScrollDebounce = setTimeout(() => {
-            const cards = [
-              document.getElementById('cardPlan0'),
-              document.getElementById('cardPlan1'),
-              document.getElementById('cardPlan2')
-            ];
-            const gridRect = grid.getBoundingClientRect();
-            const gridCenter = gridRect.left + gridRect.width / 2;
-
-            let closestIdx = 0;
-            let minDistance = Infinity;
-
-            cards.forEach((card, idx) => {
-              if (!card) return;
-              const rect = card.getBoundingClientRect();
-              const cardCenter = rect.left + rect.width / 2;
-              const dist = Math.abs(cardCenter - gridCenter);
-              if (dist < minDistance) {
-                minDistance = dist;
-                closestIdx = idx;
-              }
-            });
-
-            updatePricingActiveState(closestIdx);
-          }, 60);
-        });
-
-        // Inicializa o card destaque Salão Pro no centro em telas menores
-        if (window.innerWidth < 992) {
-          setTimeout(() => {
-            const card1 = document.getElementById('cardPlan1');
-            if (card1) {
-              card1.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
-            }
-          }, 300);
-        }
-        // Configura link do painel admin com o último salão ativo
-        const lastTenant = localStorage.getItem('last_atlas_tenant');
-        const btnAdmin = document.getElementById('btnNavAdmin');
-        if (btnAdmin && lastTenant) {
-          btnAdmin.href = `admin.html?tenant=${encodeURIComponent(lastTenant)}`;
-        }
-      }
+      // Configura link do painel admin com o último salão ativo
+      const lastTenant = localStorage.getItem('last_atlas_tenant');
+      const btnAdmin = document.getElementById('btnNavAdmin');
+      if (btnAdmin && lastTenant) {
+        btnAdmin.href = `admin.html?tenant=${encodeURIComponent(lastTenant)}`;
     });
 
     let currentSelectedPlan = 'pro';
