@@ -464,7 +464,7 @@
       border: 2px solid var(--gold-primary);
       box-shadow: 0 16px 40px rgba(142, 116, 83, 0.25);
       position: relative;
-      background: #1c1512;
+      background: #FFFFFF;
       margin-bottom: 16px;
     }
 
@@ -1079,7 +1079,7 @@
   <!-- Navbar -->
   <nav class="navbar">
     <a href="/" class="nav-brand">
-      <img src="img/logo.png" alt="Atlas Agendamento" style="height: 40px; width: auto; object-fit: contain;" />
+      <img src="/img/logo.png" onerror="this.onerror=null; this.src='https://res.cloudinary.com/tu1laexi/image/upload/v1789686147/atlas_agendamento/brand/atlas_official_logo.png';" alt="Atlas Agendamento" style="height: 40px; width: auto; object-fit: contain;" />
       <div class="brand-title-box">
         <div class="brand-title">Atlas <span>Agendamento</span></div>
         <div class="brand-sub">Platform for Beauty Artists</div>
@@ -1192,7 +1192,7 @@
         <!-- Lado Direito: Vitrine com Foto Editorial no Arco -->
         <div class="showcase-visual-arch">
           <div class="arch-preview-frame">
-            <img src="img/atlas_brand.png" alt="Atlas Agendamento Marca Oficial" />
+            <img src="/img/atlas_brand.png" onerror="this.onerror=null; this.src='https://res.cloudinary.com/tu1laexi/image/upload/v1789686147/atlas_agendamento/brand/atlas_official_logo.png';" alt="Atlas Agendamento Marca Oficial" />
             <div class="arch-badge-float">
               ✦ Sua Foto de Capa Aqui
             </div>
@@ -1583,6 +1583,7 @@
       const btnAdmin = document.getElementById('btnNavAdmin');
       if (btnAdmin && lastTenant) {
         btnAdmin.href = `admin.html?tenant=${encodeURIComponent(lastTenant)}`;
+      }
     });
 
     let currentSelectedPlan = 'pro';
