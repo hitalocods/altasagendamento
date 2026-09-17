@@ -1,8 +1,16 @@
+require('dotenv').config();
+
+// Se DATABASE_URL estiver configurada para produção (Supabase), conecta e opera 100% no PostgreSQL
+if (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('[YOUR-PASSWORD]')) {
+  console.log('⚡ Conectando diretamente ao Supabase PostgreSQL na nuvem...');
+  module.exports = require('./db_postgres');
+  return;
+}
+
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { DatabaseSync } = require('node:sqlite');
-require('dotenv').config();
 
 // Diretório de dados e banco SQLite
 const DATA_DIR = process.env.VERCEL ? path.join(os.tmpdir(), 'atlas_data') : path.join(__dirname, 'data');
@@ -195,7 +203,7 @@ async function initDb() {
   try { db.exec("ALTER TABLE appointments ADD COLUMN professional_id INTEGER;"); } catch (e) {}
   try { db.exec("ALTER TABLE appointments ADD COLUMN professional_name TEXT;"); } catch (e) {}
 
-  // Semente do Tenant Padrão (Geovanna Macedo) se não existir
+  // Semente do Tenant Padrão (Studio Lumina) se não existir
   seedDefaultTenant(db);
 
   isInitialized = true;
@@ -203,9 +211,9 @@ async function initDb() {
 }
 
 function seedDefaultTenant(db) {
-  // Migra qualquer registro antigo para o novo padrão neutro Studio Lumina
+  // Inicializa o padrão Studio Lumina
   try {
-    const oldCheck = db.prepare('SELECT id FROM tenants WHERE slug = ?').get('geovanna-macedo');
+    const oldCheck = db.prepare('SELECT id FROM tenants WHERE slug = ?').get('studio-lumina');
     if (oldCheck) {
       db.prepare(`
         UPDATE tenants 
@@ -427,7 +435,7 @@ async function createTenant(data) {
   const tagline = data.tagline || 'Atendimento Exclusivo';
   const description = data.description || 'Beleza que respeita o seu tempo e a sua história.';
   const aboutText = data.about_text || 'Atendimento especializado e exclusivo com produtos de alta qualidade e foco no seu bem-estar.';
-  const primaryPhoto = data.primary_photo || 'img/geovana_clean.webp';
+  const primaryPhoto = data.primary_photo || 'img/salon_cover.webp';
   const whatsapp = data.whatsapp || '';
   const instagram = data.instagram || '';
   const specialties = Array.isArray(data.specialties) ? JSON.stringify(data.specialties) : JSON.stringify(['Maquiagem', 'Penteados', 'Tratamentos']);

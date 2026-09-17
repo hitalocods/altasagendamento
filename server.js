@@ -75,16 +75,16 @@ app.get('/api/config/db-status', async (req, res) => {
 const cloudinary = require('cloudinary').v2;
 
 // Configuração Cloudinary para Uploads em Nuvem
-if (process.env.CLOUDINARY_URL && !process.env.CLOUDINARY_URL.includes('<your_api_key>')) {
-  cloudinary.config();
-  console.log('☁️ Cloudinary ativo para armazenamento de imagens em produção.');
-} else if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
   });
-  console.log('☁️ Cloudinary ativo via variáveis individuais.');
+  console.log('☁️ Cloudinary ativo para armazenamento de fotos em produção (CDN).');
+} else if (process.env.CLOUDINARY_URL && !process.env.CLOUDINARY_URL.includes('<your_api_key>')) {
+  cloudinary.config(true);
+  console.log('☁️ Cloudinary ativo via CLOUDINARY_URL.');
 }
 
 // ----------------------------------------------------

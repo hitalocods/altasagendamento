@@ -2330,7 +2330,7 @@
           <!-- Foto de Capa / Arco Editorial -->
           <div style="background: #FAF7F4; border: 1px solid var(--border-gold); border-radius: 20px; padding: 18px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
             <div style="width: 110px; height: 145px; border-radius: 60px 60px 14px 14px; overflow: hidden; border: 2px solid var(--border-gold); background: #120e0c; box-shadow: 0 8px 20px rgba(0,0,0,0.15); flex-shrink: 0;">
-              <img id="adminBizPhotoPreview" src="img/geovana_clean.webp" alt="Foto de Início" style="width: 100%; height: 100%; object-fit: cover;" />
+              <img id="adminBizPhotoPreview" src="img/atlas_brand.png" alt="Foto de Início" style="width: 100%; height: 100%; object-fit: cover;" />
             </div>
 
             <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 10px;">
@@ -2823,9 +2823,7 @@
       }
     }
     // Executa imediatamente para atualizar tela de login e painel
-    loadTenantBrandImmediate();
-
-    const ADMIN_PASSWORD = 'admingeovana2026';
+    const ADMIN_PASSWORD = 'adminatlas2026';
     let currentPeriod = 'mes';
     let rawAppointments = [];
     let rawInventory = [];
@@ -3058,7 +3056,7 @@
         const bizName = currentTenant ? currentTenant.business_name : 'Atlas';
         new Notification(`✨ ${bizName} — Notificações Ativadas!`, {
           body: 'Você receberá avisos sonoros e visuais a cada novo agendamento de cliente.',
-          icon: 'img/geovana_clean.jpg'
+          icon: 'img/atlas_brand.png'
         });
       }
     }
@@ -3119,7 +3117,7 @@
               const bizName = currentTenant ? currentTenant.business_name : 'Atlas';
               new Notification(`✨ Novo Agendamento — ${bizName}`, {
                 body: `${a.client_name} agendou ${a.service_name} para ${a.appointment_date} às ${a.appointment_time}!`,
-                icon: 'img/geovana_clean.jpg'
+                icon: 'img/atlas_brand.png'
               });
             }
           });
@@ -3217,7 +3215,7 @@
           document.getElementById('adminBizDescription').value = currentTenant.description || '';
           document.getElementById('adminBizAboutText').value = currentTenant.about_text || '';
           
-          const photo = currentTenant.primary_photo || 'img/geovana_clean.webp';
+          const photo = currentTenant.primary_photo || 'img/atlas_brand.png';
           document.getElementById('adminBizPhotoUrl').value = photo;
           document.getElementById('adminBizPhotoPreview').src = photo;
 
@@ -3273,7 +3271,7 @@
       btn.disabled = true;
 
       try {
-        let finalPhoto = document.getElementById('adminBizPhotoUrl').value.trim() || 'img/geovana_clean.webp';
+        let finalPhoto = document.getElementById('adminBizPhotoUrl').value.trim() || 'img/atlas_brand.png';
 
         if (currentAdminPhotoDataUrl) {
           const uploadRes = await originalFetch('/api/upload', {
