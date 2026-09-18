@@ -142,14 +142,35 @@
     .toast-bar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     /* Sucesso */
-    .success-overlay { display: none; position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #FFF 0%, #F9F6F1 50%, #EAD8C3 100%); z-index: 9999; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+    .success-overlay { display: none; position: fixed; inset: 0; background: rgba(18, 14, 12, 0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 16px; }
     .success-overlay.show { display: flex; }
-    .success-card { max-width: 480px; width: 100%; animation: popIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-    @keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    .success-check { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #D6BD9F, #B59B79); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px; box-shadow: 0 10px 30px var(--gold-glow); }
-    .success-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 6vw, 40px); font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
-    .success-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 28px; }
-    .success-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 32px; border-radius: 9999px; background: linear-gradient(135deg, #D6BD9F 0%, #B59B79 50%, #8E7453 100%); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 24px var(--gold-glow); cursor: pointer; border: none; font-family: inherit; }
+    .success-card { max-width: 540px; width: 100%; max-height: 92vh; overflow-y: auto; background: #FFFFFF; border-radius: 28px; padding: clamp(20px, 4vw, 32px); box-shadow: var(--shadow-lg); border: 1.5px solid var(--border-gold); animation: popIn 0.4s cubic-bezier(0.16,1,0.3,1) both; text-align: center; }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .success-check { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #D6BD9F, #B59B79); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; box-shadow: 0 8px 24px var(--gold-glow); }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 5vw, 34px); font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+    .success-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 20px; }
+    
+    /* Access Link Boxes */
+    .access-box { background: #FAF8F5; border: 1.5px solid var(--border-gold); border-radius: 18px; padding: 14px 16px; margin-bottom: 14px; text-align: left; }
+    .access-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px; }
+    .access-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #166534; background: rgba(46,168,113,0.12); padding: 3px 9px; border-radius: 9999px; }
+    .access-badge.gold { color: var(--gold-deep); background: var(--gold-soft); }
+    .access-sub { font-size: 11px; color: var(--text-muted); }
+    .access-input-row { display: flex; gap: 8px; align-items: center; }
+    .access-input { flex: 1; min-width: 0; background: #FFF; border: 1px solid var(--border-light); border-radius: 10px; padding: 9px 12px; font-size: 12.5px; font-family: inherit; color: var(--text-dark); outline: none; }
+    .btn-copy-access { display: inline-flex; align-items: center; gap: 5px; padding: 9px 14px; border-radius: 10px; background: #FFF; border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
+    .btn-copy-access:hover { background: var(--gold-soft); border-color: var(--gold-primary); color: var(--text-dark); }
+    .btn-copy-access.copied { background: #166534; color: #FFF; border-color: #166534; }
+    .btn-open-access { display: inline-flex; align-items: center; gap: 4px; padding: 9px 13px; border-radius: 10px; background: var(--gold-soft); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 12px; font-weight: 700; text-decoration: none; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
+    .btn-open-access:hover { background: var(--gold-primary); color: #FFF; }
+    .access-pin-row { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-light); font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+
+    /* Success Actions */
+    .success-actions-col { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .success-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 24px; border-radius: 9999px; background: linear-gradient(135deg, #D6BD9F 0%, #B59B79 50%, #8E7453 100%); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 24px var(--gold-glow); cursor: pointer; border: none; font-family: inherit; transition: all 0.2s ease; }
+    .success-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(181,155,121,0.5); }
+    .btn-whatsapp-save { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; padding: 12px 20px; border-radius: 9999px; background: rgba(37, 211, 102, 0.12); border: 1px solid rgba(37, 211, 102, 0.35); color: #15803d; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; font-family: inherit; transition: all 0.2s ease; }
+    .btn-whatsapp-save:hover { background: rgba(37, 211, 102, 0.22); color: #14532d; }
   </style>
 </head>
 
@@ -293,13 +314,57 @@
     <span id="toastMsg">Negócio criado!</span>
   </div>
 
-  <!-- Sucesso -->
+  <!-- Sucesso com Links de Acesso -->
   <div class="success-overlay" id="successOverlay">
     <div class="success-card">
       <div class="success-check">✓</div>
-      <div class="success-title">Negócio Criado! 🎉</div>
-      <p class="success-desc">Sua vitrine está no ar.<br />Agora configure seus serviços, horários e comece a receber agendamentos.</p>
-      <button class="success-btn" onclick="goToPanel()">Acessar Meu Painel →</button>
+      <div class="success-title">Negócio Criado com Sucesso! 🎉</div>
+      <p class="success-desc" id="successBizName">Sua vitrine já está ativa na internet. Guarde e compartilhe seus links exclusivos abaixo:</p>
+
+      <!-- 1. Link de Agendamento dos Clientes -->
+      <div class="access-box">
+        <div class="access-box-header">
+          <span class="access-badge">📲 Link para suas Clientes (Bio do Instagram)</span>
+          <span class="access-sub">Envie no WhatsApp ou coloque na Bio</span>
+        </div>
+        <div class="access-input-row">
+          <input type="text" id="successBookLink" readonly class="access-input" value="https://..." />
+          <button type="button" class="btn-copy-access" id="btnCopyBook" onclick="copySuccessLink('successBookLink', this)">
+            📋 Copiar
+          </button>
+          <a id="successBookBtn" href="#" target="_blank" class="btn-open-access" title="Abrir em nova aba">
+            👁️ Abrir
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Link do Painel Administrativo -->
+      <div class="access-box">
+        <div class="access-box-header">
+          <span class="access-badge gold">🔒 Seu Painel Administrativo</span>
+          <span class="access-sub">Acesso restrito para gerenciar seu espaço</span>
+        </div>
+        <div class="access-input-row">
+          <input type="text" id="successAdminLink" readonly class="access-input" value="https://..." />
+          <button type="button" class="btn-copy-access" id="btnCopyAdmin" onclick="copySuccessLink('successAdminLink', this)">
+            📋 Copiar
+          </button>
+        </div>
+        <div class="access-pin-row">
+          <span>🔑 Sua Senha / PIN: <strong id="successPinDisplay" style="color: var(--gold-deep); font-size: 14px;">1234</strong></span>
+          <span style="font-size: 11px; color: var(--text-muted);">Guarde bem sua senha de acesso</span>
+        </div>
+      </div>
+
+      <!-- Ações Finais -->
+      <div class="success-actions-col">
+        <button type="button" class="success-btn" onclick="goToPanel()">
+          🚀 Entrar no Meu Painel de Controle →
+        </button>
+        <a id="btnShareWhats" href="#" target="_blank" class="btn-whatsapp-save">
+          💬 Salvar Links no meu Próprio WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 
@@ -437,12 +502,59 @@
         if (json.success && json.data) {
           createdTenantSlug = json.data.slug;
           localStorage.setItem('last_atlas_tenant', json.data.slug);
-          sessionStorage.setItem(`atlas_admin_auth_${json.data.slug}`,'true');
+          sessionStorage.setItem(`atlas_admin_auth_${json.data.slug}`, 'true');
+
+          const origin = window.location.origin;
+          const bookUrl = `${origin}/agendamento.html?tenant=${encodeURIComponent(json.data.slug)}`;
+          const adminUrl = `${origin}/admin.html?tenant=${encodeURIComponent(json.data.slug)}`;
+          const pin = document.getElementById('adminPin').value.trim() || '1234';
+          const whatsRaw = document.getElementById('whatsapp').value.replace(/\D/g, '');
+          const bizName = document.getElementById('businessName').value.trim();
+
+          document.getElementById('successBizName').textContent = `Seu espaço "${bizName}" já está no ar! Guarde seus links exclusivos abaixo:`;
+          document.getElementById('successBookLink').value = bookUrl;
+          document.getElementById('successBookBtn').href = bookUrl;
+          document.getElementById('successAdminLink').value = adminUrl;
+          document.getElementById('successPinDisplay').textContent = pin;
+
+          // Mensagem pronta para enviar ao WhatsApp da dona
+          const whatsMsg = encodeURIComponent(
+            `✨ Meus links no Atlas Agendamento foram criados com sucesso!\n\n` +
+            `📲 Link de Agendamento das Clientes:\n${bookUrl}\n\n` +
+            `🔒 Link do Painel Administrativo:\n${adminUrl}\n` +
+            `🔑 Senha de Acesso (PIN): ${pin}\n\n` +
+            `Guarde esta mensagem para não perder seus acessos!`
+          );
+          const whatsPhone = whatsRaw.length >= 10 ? (whatsRaw.startsWith('55') ? whatsRaw : '55' + whatsRaw) : '';
+          document.getElementById('btnShareWhats').href = whatsPhone 
+            ? `https://api.whatsapp.com/send?phone=${whatsPhone}&text=${whatsMsg}`
+            : `https://api.whatsapp.com/send?text=${whatsMsg}`;
+
           document.getElementById('successOverlay').classList.add('show');
         } else throw new Error(json.error || 'Erro ao criar negócio.');
       } catch(err) {
         showToast('❌', err.message || 'Erro inesperado. Tente novamente.');
         btn.disabled = false; lbl.textContent = 'Criar Negócio & Abrir Minha Vitrine';
+      }
+    }
+
+    async function copySuccessLink(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      try {
+        await navigator.clipboard.writeText(input.value);
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✓ Copiado!';
+        btn.classList.add('copied');
+        showToast('✓', 'Link copiado com sucesso!');
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2500);
+      } catch (err) {
+        input.select();
+        document.execCommand('copy');
+        showToast('✓', 'Link copiado com sucesso!');
       }
     }
 

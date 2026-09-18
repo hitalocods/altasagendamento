@@ -647,36 +647,156 @@
       z-index: 2;
     }
 
-    /* Tabs Navigation */
+    /* Tabs Navigation - Mostra todas as 8 opções sem cortar nada */
     .tabs-bar {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .tabs-bar::-webkit-scrollbar {
-      display: none;
+      align-items: center;
+      padding-bottom: 8px;
+      width: 100%;
     }
 
     .tab-btn {
       background: #FFFFFF;
       border: 1px solid var(--border-glass);
       color: var(--text-secondary);
-      padding: 9px 18px;
+      padding: 8px 16px;
       border-radius: 9999px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       white-space: nowrap;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       box-shadow: 0 2px 8px rgba(168, 134, 97, 0.04);
       flex-shrink: 0;
+    }
+
+    /* Banner de Links Rápidos no Painel */
+    .dash-links-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 18px rgba(168, 134, 97, 0.07);
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dash-links-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dash-links-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--champagne-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dash-links-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #166534;
+      background: rgba(46,168,113,0.12);
+      border: 1px solid rgba(46,168,113,0.25);
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+    .dash-links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 860px) {
+      .dash-links-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .dash-link-item {
+      background: #FAF8F5;
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .dash-link-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dash-link-action-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .dash-link-input {
+      flex: 1;
+      min-width: 0;
+      background: #FFFFFF;
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      color: var(--text-primary);
+      font-family: inherit;
+      outline: none;
+    }
+    .btn-copy-mini {
+      padding: 7px 12px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-gold);
+      color: var(--champagne-dark);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-copy-mini:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-primary);
+      color: var(--text-primary);
+    }
+    .btn-copy-mini.copied {
+      background: #166534 !important;
+      color: #FFFFFF !important;
+      border-color: #166534 !important;
+    }
+    .btn-open-mini {
+      padding: 7px 12px;
+      border-radius: 8px;
+      background: var(--champagne-gold);
+      color: var(--champagne-dark);
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-open-mini:hover {
+      background: var(--champagne-dark);
+      color: #FFFFFF;
     }
 
     .tab-btn:hover {
@@ -1653,9 +1773,19 @@
     }
 
     @media (max-width: 768px) {
-      /* Oculta as abas horizontais no mobile para concentrar tudo no Menu Hamburguer */
+      /* Exibe todas as abas no mobile em wrap compacto para acesso direto */
       .tabs-bar {
-        display: none !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 4px 0 10px;
+        width: 100%;
+      }
+
+      .tab-btn {
+        padding: 6px 12px;
+        font-size: 11.5px;
+        gap: 4px;
       }
 
       .badge-pill {
@@ -2074,7 +2204,7 @@
         <span class="bell-badge" id="bellBadge">0</span>
       </button>
 
-      <a href="agendamento.html" class="btn-nav-outline" title="Ver tela de agendamento">
+      <a href="agendamento.html" id="btnHeaderBookLink" target="_blank" class="btn-nav-outline" title="Ver tela de agendamento">
         📅 Ver Agendamento
       </a>
       <div class="db-status-badge" id="dbStatusBadge">
@@ -2108,13 +2238,13 @@
 
   <!-- Container Principal -->
   <main class="admin-container" id="adminMainContent">
-    <!-- Abas de Navegação -->
+    <!-- Abas de Navegação (Todas as 8 opções visíveis sem cortar nada) -->
     <nav class="tabs-bar">
-      <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard', this)">📊 Visão Geral & Gráficos</button>
+      <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard', this)">📊 Visão Geral</button>
       <button class="tab-btn" data-tab="appointments" onclick="switchTab('appointments', this)">📅 Agendamentos</button>
       <button class="tab-btn" data-tab="professionals" onclick="switchTab('professionals', this)">👥 Equipe & Profissionais</button>
-      <button class="tab-btn" data-tab="finances" onclick="switchTab('finances', this)">💰 Financeiro Completo</button>
-      <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory', this)">📦 Controle de Estoque</button>
+      <button class="tab-btn" data-tab="finances" onclick="switchTab('finances', this)">💰 Financeiro</button>
+      <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory', this)">📦 Estoque</button>
       <button class="tab-btn" data-tab="availability" onclick="switchTab('availability', this)">⏰ Horários & Folgas</button>
       <button class="tab-btn" data-tab="services" onclick="switchTab('services', this)">💄 Serviços</button>
       <button class="tab-btn" data-tab="business" onclick="switchTab('business', this)">🏢 Meu Negócio</button>
@@ -2124,6 +2254,43 @@
     <!-- 1. ABA: DASHBOARD & MÉTRICAS (COM FILTRO DE/ATÉ)-->
     <!-- ============================================== -->
     <section id="viewDashboard" class="view-section active">
+      <!-- Banner de Links Rápidos do Negócio -->
+      <div class="dash-links-card" id="dashLinksCard">
+        <div class="dash-links-header">
+          <div class="dash-links-title">✦ Links Oficiais do seu Negócio</div>
+          <span class="dash-links-badge">● No Ar &amp; Pronto para Divulgar</span>
+        </div>
+        <div class="dash-links-grid">
+          <!-- Link 1: Agendamento das Clientes -->
+          <div class="dash-link-item">
+            <div class="dash-link-label">
+              <span>📲 Link para Clientes (Bio do Instagram)</span>
+            </div>
+            <div class="dash-link-action-row">
+              <input type="text" id="dashBookLinkInput" readonly class="dash-link-input" placeholder="Carregando link..." />
+              <button type="button" class="btn-copy-mini" onclick="copyDashLink('dashBookLinkInput', this)">
+                📋 Copiar
+              </button>
+              <a id="dashBookLinkBtn" href="#" target="_blank" class="btn-open-mini">
+                👁️ Ver
+              </a>
+            </div>
+          </div>
+
+          <!-- Link 2: Painel Admin -->
+          <div class="dash-link-item">
+            <div class="dash-link-label">
+              <span>🔒 Link do Painel Administrativo</span>
+            </div>
+            <div class="dash-link-action-row">
+              <input type="text" id="dashAdminLinkInput" readonly class="dash-link-input" placeholder="Carregando link..." />
+              <button type="button" class="btn-copy-mini" onclick="copyDashLink('dashAdminLinkInput', this)">
+                📋 Copiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Filtro de Período Rápido + Intervalo Customizado De / Até -->
       <div class="period-filter-bar">
         <div class="period-pills">
@@ -3085,6 +3252,7 @@
 
       checkDbStatus();
       updateNotificationBtnState();
+      await loadBusinessProfile();
       await loadMetrics();
       await loadAppointments();
       await loadFinances();
@@ -3397,12 +3565,31 @@
           const origin = window.location.origin;
           const siteUrl = `${origin}/vitrine.html?tenant=${encodeURIComponent(currentTenant.slug)}`;
           const bookUrl = `${origin}/agendamento.html?tenant=${encodeURIComponent(currentTenant.slug)}`;
+          const adminUrl = `${origin}/admin.html?tenant=${encodeURIComponent(currentTenant.slug)}`;
           
-          document.getElementById('btnPreviewSite').href = siteUrl;
-          document.getElementById('adminShareLinksText').innerHTML = `
-            <div>Vitrine: <a href="${siteUrl}" target="_blank" style="color: var(--champagne-dark); text-decoration: underline;">${siteUrl}</a></div>
-            <div style="margin-top: 3px;">Agendamento: <a href="${bookUrl}" target="_blank" style="color: var(--champagne-dark); text-decoration: underline;">${bookUrl}</a></div>
-          `;
+          if (document.getElementById('btnPreviewSite')) document.getElementById('btnPreviewSite').href = siteUrl;
+          if (document.getElementById('btnHeaderBookLink')) document.getElementById('btnHeaderBookLink').href = bookUrl;
+          if (document.getElementById('dashBookLinkInput')) document.getElementById('dashBookLinkInput').value = bookUrl;
+          if (document.getElementById('dashBookLinkBtn')) document.getElementById('dashBookLinkBtn').href = bookUrl;
+          if (document.getElementById('dashAdminLinkInput')) document.getElementById('dashAdminLinkInput').value = adminUrl;
+
+          if (document.getElementById('adminShareLinksText')) {
+            document.getElementById('adminShareLinksText').innerHTML = `
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span style="font-size: 11px; font-weight: 700; color: #166534; background: rgba(46,168,113,0.12); padding: 2px 8px; border-radius: 9999px;">📲 Agendamento</span>
+                  <input type="text" id="shareBizBookLink" readonly value="${bookUrl}" style="background: #fff; border: 1px solid var(--border-gold); border-radius: 8px; padding: 6px 10px; font-size: 12px; flex: 1; min-width: 180px;" />
+                  <button type="button" class="btn-copy-mini" onclick="copyDashLink('shareBizBookLink', this)">📋 Copiar</button>
+                  <a href="${bookUrl}" target="_blank" class="btn-open-mini">👁️ Abrir</a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span style="font-size: 11px; font-weight: 700; color: var(--champagne-dark); background: var(--gold-soft); padding: 2px 8px; border-radius: 9999px;">🔒 Painel Admin</span>
+                  <input type="text" id="shareBizAdminLink" readonly value="${adminUrl}" style="background: #fff; border: 1px solid var(--border-gold); border-radius: 8px; padding: 6px 10px; font-size: 12px; flex: 1; min-width: 180px;" />
+                  <button type="button" class="btn-copy-mini" onclick="copyDashLink('shareBizAdminLink', this)">📋 Copiar</button>
+                </div>
+              </div>
+            `;
+          }
         }
       } catch (err) {
         console.error('Erro ao carregar perfil do negócio:', err);
@@ -3429,11 +3616,36 @@
       }
     }
 
+    async function copyDashLink(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      try {
+        await navigator.clipboard.writeText(input.value);
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ Copiado!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('copied');
+        }, 2500);
+      } catch (e) {
+        input.select();
+        document.execCommand('copy');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ Copiado!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+    }
+
     function copyClientBookingLink() {
       const origin = window.location.origin;
       const bookUrl = `${origin}/agendamento.html?tenant=${encodeURIComponent(currentTenantSlug)}`;
       navigator.clipboard.writeText(bookUrl).then(() => {
-        alert('Link copiado com sucesso para a área de transferência:\n' + bookUrl);
+        alert('Link de agendamento copiado com sucesso:\n' + bookUrl);
       }).catch(() => {
         prompt('Copie o link abaixo:', bookUrl);
       });
