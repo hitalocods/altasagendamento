@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Meu Negócio — Atlas Agendamento</title>
+  <meta name="description" content="Configure seu salão ou espaço de beleza e comece a receber agendamentos online hoje mesmo." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-body: #FAF8F5;
+      --gold-primary: #B59B79;
+      --gold-deep: #8E7453;
+      --gold-light: #D6BD9F;
+      --gold-soft: #EFE6D9;
+      --gold-glow: rgba(181, 155, 121, 0.28);
+      --text-dark: #1E1714;
+      --text-secondary: #57463E;
+      --text-muted: #88746B;
+      --text-subtle: #B3A49C;
+      --border-light: rgba(181, 155, 121, 0.22);
+      --border-gold: rgba(181, 155, 121, 0.45);
+      --shadow-sm: 0 4px 20px rgba(142, 116, 83, 0.06);
+      --shadow-md: 0 12px 36px rgba(142, 116, 83, 0.12);
+      --shadow-lg: 0 25px 60px rgba(142, 116, 83, 0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { overflow-x: hidden; max-width: 100vw; }
+    body { background: radial-gradient(circle at 50% 0%, #FFF 0%, #FAF8F5 55%, #F4EFE6 100%); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); min-height: 100vh; min-height: 100dvh; overflow-x: hidden; width: 100%; }
+    img { max-width: 100%; height: auto; }
+    @media (max-width: 768px) { input, select, textarea, button { font-size: 16px !important; } }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px clamp(16px, 4vw, 48px); background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-light); }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-dark); }
+    .brand-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; letter-spacing: 0.04em; }
+    .brand-title span { color: var(--gold-primary); }
+    .btn-back { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 9999px; background: #fff; border: 1px solid var(--border-gold); color: var(--text-secondary); font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
+    .btn-back:hover { background: var(--gold-soft); border-color: var(--gold-primary); color: var(--text-dark); }
+
+    /* PAGE HEADER */
+    .page-header { text-align: center; padding: clamp(28px, 5vw, 44px) clamp(16px, 4vw, 32px) 0; max-width: 680px; margin: 0 auto clamp(12px, 2vw, 20px); }
+    .page-header-badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 16px; border-radius: 9999px; background: #fff; border: 1px solid var(--border-gold); box-shadow: var(--shadow-sm); margin-bottom: 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .page-header h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 6vw, 46px); font-weight: 600; color: var(--text-dark); line-height: 1.1; margin-bottom: 10px; }
+    .page-header h1 span { background: linear-gradient(135deg, #B59B79 20%, #8E7453 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-style: italic; }
+    .page-header p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* STEPS */
+    .steps-indicator { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto 28px; padding: 0 16px; max-width: 380px; }
+    .step-dot { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-subtle); }
+    .step-dot.active { color: var(--gold-deep); }
+    .step-dot-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: var(--text-subtle); background: #fff; flex-shrink: 0; }
+    .step-dot.active .step-dot-circle { border-color: var(--gold-primary); background: var(--gold-soft); color: var(--gold-deep); }
+    .step-dot.done .step-dot-circle { border-color: var(--gold-primary); background: var(--gold-primary); color: #fff; }
+    .step-dot.done { color: var(--gold-deep); }
+    .step-connector { flex: 1; height: 1px; background: var(--border-light); max-width: 40px; }
+
+    /* LAYOUT */
+    .page-wrapper { max-width: 1100px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px) 60px; display: grid; grid-template-columns: 1fr 1.55fr; gap: clamp(20px, 4vw, 48px); align-items: start; }
+    @media (max-width: 780px) { .page-wrapper { grid-template-columns: 1fr; gap: 16px; padding-bottom: 40px; } }
+
+    /* PLAN SIDEBAR */
+    .plan-sidebar { position: sticky; top: 76px; }
+    @media (max-width: 780px) { .plan-sidebar { position: static; } }
+    .plan-header-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .plan-card-chosen { background: #FFF; border: 1.5px solid var(--border-gold); border-radius: 24px; padding: clamp(18px, 3vw, 26px); box-shadow: var(--shadow-md); position: relative; overflow: hidden; }
+    .plan-card-chosen::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #D6BD9F, #B59B79, #8E7453); }
+    .plan-badge-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .plan-badge-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 9999px; font-size: 11px; font-weight: 800; }
+    .plan-badge-tag.green { background: rgba(46,168,113,0.12); color: #166534; border: 1px solid rgba(46,168,113,0.25); }
+    .plan-badge-tag.gold { background: var(--gold-soft); color: var(--gold-deep); border: 1px solid var(--border-gold); }
+    .plan-badge-tag.purple { background: rgba(142,116,83,0.12); color: var(--gold-deep); border: 1px solid var(--border-light); }
+    .featured-pill-chosen { background: linear-gradient(135deg, #D6BD9F, #B59B79); color: #fff; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 11px; border-radius: 9999px; }
+    .plan-name-chosen { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 4.5vw, 32px); font-weight: 700; color: var(--text-dark); line-height: 1.1; margin-bottom: 4px; }
+    .plan-desc-chosen { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; }
+    .plan-price-box { background: var(--gold-soft); border: 1px solid var(--border-light); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; }
+    .plan-price-row { display: flex; align-items: baseline; gap: 3px; margin-bottom: 2px; }
+    .plan-currency { font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+    .plan-price-big { font-size: clamp(32px, 5.5vw, 40px); font-weight: 800; color: var(--text-dark); line-height: 1; letter-spacing: -0.02em; }
+    .plan-period { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .plan-price-note { font-size: 11px; font-weight: 600; color: var(--gold-deep); margin-top: 2px; }
+
+    /* Aviso plano free */
+    .free-upgrade-notice { background: rgba(217,107,88,0.07); border: 1px solid rgba(217,107,88,0.22); border-radius: 12px; padding: 10px 13px; margin-bottom: 14px; display: flex; gap: 8px; align-items: flex-start; }
+    .free-upgrade-notice p { font-size: 12px; color: #9B3B28; line-height: 1.5; font-weight: 500; }
+    .free-upgrade-notice strong { font-weight: 700; }
+
+    .plan-features-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .plan-feature-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+    .check-bubble { width: 16px; height: 16px; border-radius: 50%; background: var(--gold-soft); color: var(--gold-deep); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+    .btn-change-plan { display: block; width: 100%; padding: 9px; border-radius: 9999px; border: 1px dashed var(--border-gold); background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; text-decoration: none; text-align: center; margin-top: 12px; }
+    .btn-change-plan:hover { background: var(--gold-soft); color: var(--text-dark); border-style: solid; border-color: var(--gold-primary); }
+
+    .guarantees-list { margin-top: 16px; display: flex; flex-direction: column; gap: 9px; }
+    .guarantee-item { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .guarantee-icon { width: 26px; height: 26px; border-radius: 50%; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+    /* FORM CARD */
+    .form-card { background: #FFF; border: 1px solid var(--border-light); border-radius: 28px; padding: clamp(22px, 4vw, 34px) clamp(18px, 4vw, 30px); box-shadow: var(--shadow-lg); }
+    .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px, 4vw, 30px); font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .form-section-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.5; }
+    .form-divider { height: 1px; background: var(--border-light); margin: 18px 0; }
+    .form-group-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .form-group-label::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+    .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .form-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+    .form-control { background: #FAF8F5; border: 1.5px solid var(--border-light); color: var(--text-dark); padding: 11px 14px; border-radius: 14px; font-size: 14px; font-family: inherit; outline: none; transition: all 0.2s ease; width: 100%; }
+    .form-control:focus { border-color: var(--gold-primary); background: #FFF; box-shadow: 0 0 0 3px var(--gold-glow); }
+    .form-control::placeholder { color: var(--text-subtle); }
+    .form-hint { font-size: 11px; color: var(--text-subtle); margin-top: 2px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    /* Photo upload */
+    .photo-upload-zone { border: 2px dashed var(--border-gold); border-radius: 18px; padding: 16px; background: #FAF8F5; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .photo-upload-zone:hover { border-color: var(--gold-primary); background: var(--gold-soft); }
+    .photo-arch-preview { width: 58px; height: 76px; border-radius: 30px 30px 8px 8px; overflow: hidden; border: 2px solid var(--gold-primary); background: #1c1512; flex-shrink: 0; box-shadow: 0 4px 12px var(--gold-glow); }
+    .photo-arch-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-upload-info { flex: 1; min-width: 0; }
+    .photo-upload-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .photo-upload-sub { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .photo-upload-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 9999px; border: 1px solid var(--border-gold); background: #fff; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; margin-top: 7px; }
+    .photo-upload-btn:hover { background: var(--gold-soft); border-color: var(--gold-primary); }
+
+    .slug-preview-box { background: var(--gold-soft); border: 1px solid var(--border-light); border-radius: 10px; padding: 7px 12px; font-size: 11px; color: var(--text-muted); margin-top: 4px; word-break: break-all; }
+    .slug-preview-box strong { color: var(--gold-deep); font-weight: 700; }
+
+    .btn-submit-create { width: 100%; padding: 15px 24px; border-radius: 9999px; background: linear-gradient(135deg, #D6BD9F 0%, #B59B79 50%, #8E7453 100%); color: #FFF; border: none; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 8px 24px var(--gold-glow); min-height: 52px; font-family: inherit; margin-top: 18px; }
+    .btn-submit-create:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(181,155,121,0.5); }
+    .btn-submit-create:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+    .submit-terms { text-align: center; font-size: 11px; color: var(--text-subtle); margin-top: 10px; line-height: 1.5; }
+
+    /* Toast */
+    .toast-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #FFF; border: 1px solid var(--border-gold); border-radius: 14px; padding: 11px 20px; box-shadow: var(--shadow-lg); font-size: 13px; font-weight: 600; color: var(--text-dark); display: flex; align-items: center; gap: 9px; z-index: 9999; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; opacity: 0; max-width: calc(100vw - 32px); }
+    .toast-bar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* Sucesso */
+    .success-overlay { display: none; position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #FFF 0%, #F9F6F1 50%, #EAD8C3 100%); z-index: 9999; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+    .success-overlay.show { display: flex; }
+    .success-card { max-width: 480px; width: 100%; animation: popIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .success-check { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #D6BD9F, #B59B79); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px; box-shadow: 0 10px 30px var(--gold-glow); }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 6vw, 40px); font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+    .success-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 28px; }
+    .success-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 32px; border-radius: 9999px; background: linear-gradient(135deg, #D6BD9F 0%, #B59B79 50%, #8E7453 100%); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 24px var(--gold-glow); cursor: pointer; border: none; font-family: inherit; }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <img src="/img/logo.png" onerror="this.onerror=null;this.src='https://res.cloudinary.com/tu1laexi/image/upload/v1789686147/atlas_agendamento/brand/atlas_official_logo.png';" alt="Atlas Agendamento" style="height:36px;width:auto;object-fit:contain;" />
+      <div class="brand-title">Atlas <span>Agendamento</span></div>
+    </a>
+    <a href="index.html#planos" class="btn-back">← Ver Planos</a>
+  </nav>
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="page-header-badge">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--gold-primary);display:inline-block;box-shadow:0 0 8px var(--gold-primary);"></span>
+      ✦ Ativação em 1 Minuto
+    </div>
+    <h1>Criar Meu <span>Negócio</span></h1>
+    <p>Preencha as informações abaixo e sua vitrine de agendamentos já fica no ar imediatamente.</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps-indicator">
+    <div class="step-dot done">
+      <div class="step-dot-circle">✓</div>
+      <span>Plano</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-dot active">
+      <div class="step-dot-circle">2</div>
+      <span>Cadastro</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-dot">
+      <div class="step-dot-circle">3</div>
+      <span>Pronto!</span>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <div class="page-wrapper">
+    <!-- Coluna Esquerda: Plano -->
+    <aside class="plan-sidebar">
+      <div class="plan-header-label">✦ Plano Selecionado</div>
+      <div class="plan-card-chosen" id="planCard"><!-- preenchido via JS --></div>
+      <a href="index.html#planos" class="btn-change-plan">← Trocar de Plano</a>
+      <div class="guarantees-list">
+        <div class="guarantee-item"><div class="guarantee-icon">🔒</div><span>Sem contrato de fidelidade — cancele quando quiser</span></div>
+        <div class="guarantee-item"><div class="guarantee-icon">⚡</div><span>Vitrine no ar imediatamente após o cadastro</span></div>
+        <div class="guarantee-item"><div class="guarantee-icon">💬</div><span>Suporte pelo WhatsApp sempre que precisar</span></div>
+      </div>
+    </aside>
+
+    <!-- Coluna Direita: Formulário -->
+    <div class="form-card">
+      <div class="form-section-title">Configure seu Negócio</div>
+      <p class="form-section-desc">Leva menos de 2 minutos. Você pode editar tudo depois no painel.</p>
+
+      <form id="formCadastro" onsubmit="handleCadastroSubmit(event)" autocomplete="off">
+
+        <div class="form-group-label">📸 Sua Foto de Capa</div>
+
+        <label for="photoFileInput" style="cursor:pointer;display:block;">
+          <div class="photo-upload-zone" id="photoUploadZone">
+            <div class="photo-arch-preview">
+              <img id="photoPreview" src="img/salon_cover.webp" alt="Prévia" onerror="this.style.display='none'" />
+            </div>
+            <div class="photo-upload-info">
+              <div class="photo-upload-title">Foto do Arco Editorial</div>
+              <div class="photo-upload-sub">Apareça com autoridade na sua vitrine. Use sua melhor foto de rosto ou de trabalho.</div>
+              <span class="photo-upload-btn">📷 Escolher Foto</span>
+            </div>
+          </div>
+          <input type="file" id="photoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" />
+        </label>
+
+        <div class="form-group">
+          <label class="form-label">Ou cole URL de uma foto</label>
+          <input type="url" id="photoUrl" class="form-control" placeholder="https://..." oninput="handlePhotoUrlInput(this.value)" />
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-group-label">👤 Identidade do Negócio</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="titleFirst">Primeiro Nome *</label>
+            <input type="text" id="titleFirst" class="form-control" placeholder="Ex: Mariana" required oninput="onNameChange()" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="titleLast">Sobrenome / Marca *</label>
+            <input type="text" id="titleLast" class="form-control" placeholder="Ex: Silva" required oninput="onNameChange()" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="businessName">Nome Comercial Completo *</label>
+          <input type="text" id="businessName" class="form-control" placeholder="Ex: Mariana Silva Beauty & Hair" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tagline">Frase de Destaque (Tagline)</label>
+          <input type="text" id="tagline" class="form-control" placeholder="Ex: Especialista em Noivas & Formandas" value="Atendimento Exclusivo" />
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-group-label">🔑 Contato & Acesso</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="whatsapp">WhatsApp com DDD *</label>
+            <input type="tel" id="whatsapp" class="form-control" placeholder="(11) 99999-9999" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="adminPin">Senha do Painel *</label>
+            <input type="text" id="adminPin" class="form-control" placeholder="Ex: 1234" value="1234" required maxlength="20" />
+            <span class="form-hint">Guarde bem — é sua chave de acesso</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="slug">Link Exclusivo (Slug)</label>
+          <input type="text" id="slug" class="form-control" placeholder="Ex: mariana-silva" oninput="updateSlugPreview()" />
+          <div class="slug-preview-box">🔗 Seu link: <strong id="slugPreview">seu-negocio</strong></div>
+        </div>
+
+        <button type="submit" class="btn-submit-create" id="btnSubmit">
+          ✦ <span id="btnSubmitLabel">Criar Negócio &amp; Abrir Minha Vitrine</span>
+        </button>
+
+        <p class="submit-terms">Ao cadastrar, você concorda com os Termos de Uso. Dados protegidos e criptografados.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-bar" id="toastBar">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Negócio criado!</span>
+  </div>
+
+  <!-- Sucesso -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+      <div class="success-check">✓</div>
+      <div class="success-title">Negócio Criado! 🎉</div>
+      <p class="success-desc">Sua vitrine está no ar.<br />Agora configure seus serviços, horários e comece a receber agendamentos.</p>
+      <button class="success-btn" onclick="goToPanel()">Acessar Meu Painel →</button>
+    </div>
+  </div>
+
+  <script>
+    const PLANS = {
+      free: {
+        badge: '<span class="plan-badge-tag green">🌱 1 PROFISSIONAL</span>',
+        name: 'Degustação Grátis',
+        desc: 'Perfeito para testar sem risco. Sua vitrine de alto padrão na bio, agendamentos automáticos.',
+        priceLabel: '0',
+        pricePeriod: '/ 39 agendamentos',
+        priceNote: '100% grátis • Sem cartão de crédito',
+        showFreeNotice: true,
+        features: ['1 Profissional (sua agenda pessoal)','Grátis até 39 agendamentos','Vitrine Editorial em Arco com sua foto','Link VIP na Bio do Instagram','Confirmação direta no WhatsApp','Catálogo de Serviços & Preços interativo','Acesso imediato, sem cartão de crédito'],
+      },
+      pro: {
+        badge: '<span class="plan-badge-tag gold">👑 ATÉ 3 PROFISSIONAIS</span><span class="featured-pill-chosen">★ MAIS ESCOLHIDO</span>',
+        name: 'Salão Pro',
+        desc: 'Ideal para multiplicar o faturamento, zerar o WhatsApp e organizar sua equipe.',
+        priceLabel: '99<small style="font-size:18px;font-weight:700">,90</small>',
+        pricePeriod: '/mês',
+        priceNote: 'Agendamentos 100% ilimitados — até 3 profissionais',
+        showFreeNotice: false,
+        features: ['Até 3 Profissionais no mesmo painel','Agendamentos 100% ILIMITADOS','Zero Faltas: Lembretes via WhatsApp','Gestão de Lucro Real — faturamento na hora','Horários e Folgas Individuais por profissional','Controle de Estoque com alertas','Suporte VIP direto pelo WhatsApp'],
+      },
+      elite: {
+        badge: '<span class="plan-badge-tag purple">💎 ILIMITADO</span>',
+        name: 'Studio Elite',
+        desc: 'Para grandes salões e espaços em expansão com múltiplos profissionais e comissões.',
+        priceLabel: '189<small style="font-size:18px;font-weight:700">,90</small>',
+        pricePeriod: '/mês',
+        priceNote: 'Equipe completa, sem nenhum limite',
+        showFreeNotice: false,
+        features: ['Profissionais ILIMITADOS','Agendamentos & Clientes Sem Limite','Gestão de Comissões e Repasses','Relatórios Consolidados de Faturamento','Personalização Visual Exclusiva','Onboarding & Configuração Assistida VIP','Gerente de Conta Exclusivo no WhatsApp'],
+      }
+    };
+
+    function getPlanFromUrl() {
+      const p = new URLSearchParams(window.location.search);
+      const code = p.get('plano') || p.get('plan') || 'pro';
+      return PLANS[code] ? code : 'pro';
+    }
+
+    let currentPlanCode = getPlanFromUrl();
+    let currentPhotoBase64 = null;
+    let createdTenantSlug = '';
+
+    function renderPlanCard() {
+      const plan = PLANS[currentPlanCode];
+      const notice = plan.showFreeNotice ? `
+        <div class="free-upgrade-notice">
+          <span style="font-size:14px;flex-shrink:0;margin-top:1px;">ℹ️</span>
+          <p><strong>Após os 39 agendamentos gratuitos</strong>, sua conta migra automaticamente para o plano individual por <strong>R$&nbsp;49,90/mês</strong> — agendamentos ilimitados, sem perder nenhum dado. Cancele quando quiser.</p>
+        </div>` : '';
+      const features = plan.features.map(f => `<li class="plan-feature-item"><span class="check-bubble">✓</span><div>${f}</div></li>`).join('');
+      document.getElementById('planCard').innerHTML = `
+        <div class="plan-badge-row">${plan.badge}</div>
+        <div class="plan-name-chosen">${plan.name}</div>
+        <p class="plan-desc-chosen">${plan.desc}</p>
+        <div class="plan-price-box">
+          <div class="plan-price-row">
+            <span class="plan-currency">R$</span>
+            <span class="plan-price-big">${plan.priceLabel}</span>
+            <span class="plan-period">${plan.pricePeriod}</span>
+          </div>
+          <div class="plan-price-note">${plan.priceNote}</div>
+        </div>
+        ${notice}
+        <ul class="plan-features-list">${features}</ul>`;
+    }
+
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0]; if (!file) return;
+      const r = new FileReader();
+      r.onload = ev => { currentPhotoBase64 = ev.target.result; document.getElementById('photoPreview').src = currentPhotoBase64; document.getElementById('photoUrl').value = ''; };
+      r.readAsDataURL(file);
+    }
+
+    function handlePhotoUrlInput(url) {
+      if (url && url.trim()) { document.getElementById('photoPreview').src = url.trim(); currentPhotoBase64 = null; }
+    }
+
+    function onNameChange() {
+      const f = document.getElementById('titleFirst').value.trim();
+      const l = document.getElementById('titleLast').value.trim();
+      const biz = document.getElementById('businessName');
+      if (!biz._edited) biz.value = `${f} ${l} Beauty`.trim();
+      updateSlugPreview();
+    }
+
+    function updateSlugPreview() {
+      let val = document.getElementById('slug').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');
+      if (!val) {
+        const f = document.getElementById('titleFirst').value.trim();
+        const l = document.getElementById('titleLast').value.trim();
+        val = `${f}-${l}`.toLowerCase().replace(/[^a-z0-9_-]/g,'');
+      }
+      document.getElementById('slugPreview').textContent = val || 'seu-negocio';
+    }
+
+    async function handleCadastroSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmit');
+      const lbl = document.getElementById('btnSubmitLabel');
+      btn.disabled = true; lbl.textContent = 'Criando seu Negócio...';
+      try {
+        let finalPhoto = document.getElementById('photoUrl').value.trim() || 'img/salon_cover.webp';
+        const slugRaw = (document.getElementById('slug').value.trim() ||
+          `${document.getElementById('titleFirst').value.trim()}-${document.getElementById('titleLast').value.trim()}`
+          ).toLowerCase().replace(/[^a-z0-9_-]/g,'');
+
+        if (currentPhotoBase64) {
+          try {
+            const up = await fetch('/api/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:currentPhotoBase64,tenant:slugRaw||'negocio'})});
+            const uj = await up.json();
+            if (uj.success && uj.url) finalPhoto = uj.url;
+          } catch(_) {}
+        }
+
+        const payload = {
+          business_name: document.getElementById('businessName').value.trim(),
+          title_first: document.getElementById('titleFirst').value.trim(),
+          title_last: document.getElementById('titleLast').value.trim(),
+          tagline: document.getElementById('tagline').value.trim() || 'Atendimento Exclusivo',
+          whatsapp: document.getElementById('whatsapp').value.trim(),
+          admin_pin: document.getElementById('adminPin').value.trim() || '1234',
+          slug: slugRaw,
+          primary_photo: finalPhoto,
+          specialties: ['Maquiagem','Penteados','Produção Social','Noivas'],
+          plan: currentPlanCode
+        };
+
+        const res = await fetch('/api/tenants',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const json = await res.json();
+        if (json.success && json.data) {
+          createdTenantSlug = json.data.slug;
+          localStorage.setItem('last_atlas_tenant', json.data.slug);
+          sessionStorage.setItem(`atlas_admin_auth_${json.data.slug}`,'true');
+          document.getElementById('successOverlay').classList.add('show');
+        } else throw new Error(json.error || 'Erro ao criar negócio.');
+      } catch(err) {
+        showToast('❌', err.message || 'Erro inesperado. Tente novamente.');
+        btn.disabled = false; lbl.textContent = 'Criar Negócio & Abrir Minha Vitrine';
+      }
+    }
+
+    function goToPanel() {
+      window.location.href = createdTenantSlug ? `admin.html?tenant=${encodeURIComponent(createdTenantSlug)}` : 'admin.html';
+    }
+
+    function showToast(icon, msg) {
+      const bar = document.getElementById('toastBar');
+      document.getElementById('toastIcon').textContent = icon;
+      document.getElementById('toastMsg').textContent = msg;
+      bar.classList.add('show');
+      setTimeout(() => bar.classList.remove('show'), 4500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('businessName').addEventListener('input', function() { this._edited = true; });
+      renderPlanCard();
+      updateSlugPreview();
+    });
+  </script>
+</body>
+</html>

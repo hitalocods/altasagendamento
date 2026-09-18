@@ -1224,7 +1224,7 @@
       <a href="admin.html" id="btnNavAdmin" class="btn-nav-demo" style="text-decoration: none;" title="Acessar painel administrativo">
         🔒 Acessar Painel
       </a>
-      <button type="button" class="btn-cta-gold" onclick="openCreateModal()">
+      <button type="button" class="btn-cta-gold" onclick="irParaCadastro('pro')">
         ✦ Criar Meu Negócio
       </button>
     </div>
@@ -1246,7 +1246,7 @@
     </p>
 
     <div class="hero-buttons">
-      <button type="button" class="btn-cta-gold btn-hero-large" onclick="openCreateModal()">
+      <button type="button" class="btn-cta-gold btn-hero-large" onclick="irParaCadastro('pro')">
         ✦ Começar Agora — Criar Meu Negócio
       </button>
       <a href="vitrine.html?tenant=studio-lumina" class="btn-nav-demo btn-hero-large" target="_blank">
@@ -1455,7 +1455,7 @@
           </ul>
         </div>
 
-        <button type="button" class="btn-plan-action btn-plan-outline" onclick="openCreateModal('Degustação Grátis (1 Profissional)', 'free')">
+        <button type="button" class="btn-plan-action btn-plan-outline" onclick="irParaCadastro('free')">
           Começar Grátis Agora →
         </button>
       </div>
@@ -1513,7 +1513,7 @@
           </ul>
         </div>
 
-        <button type="button" class="btn-plan-action btn-plan-gold" onclick="openCreateModal('Salão Pro (Até 3 Profissionais - R$ 99,90)', 'pro')">
+        <button type="button" class="btn-plan-action btn-plan-gold" onclick="irParaCadastro('pro')">
           ✦ Assinar Salão Pro (R$ 99,90)
         </button>
       </div>
@@ -1566,7 +1566,7 @@
           </ul>
         </div>
 
-        <button type="button" class="btn-plan-action btn-plan-outline" onclick="openCreateModal('Studio Elite (Profissionais Ilimitados - R$ 189,90)', 'elite')">
+        <button type="button" class="btn-plan-action btn-plan-outline" onclick="irParaCadastro('elite')">
           Garantir Plano Ilimitado →
         </button>
       </div>
@@ -1604,7 +1604,7 @@
     <p class="cta-banner-sub">
       Crie seu negócio agora mesmo, escolha a foto que vai brilhar na sua capa e comece a receber agendamentos hoje.
     </p>
-    <button type="button" class="btn-cta-gold btn-hero-large" onclick="openCreateModal('Salão Pro (Até 3 Profissionais)', 'pro')">
+    <button type="button" class="btn-cta-gold btn-hero-large" onclick="irParaCadastro('pro')">
       ✦ Criar Meu Negócio em 1 Minuto
     </button>
   </div>
@@ -1714,6 +1714,10 @@
     });
 
     let currentSelectedPlan = 'pro';
+
+    function irParaCadastro(plano) {
+      window.location.href = `cadastro.html?plano=${encodeURIComponent(plano || 'pro')}`;
+    }
 
     function openCreateModal(planName = '', planCode = 'pro') {
       currentSelectedPlan = planCode || 'pro';
