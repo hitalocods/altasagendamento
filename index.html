@@ -1221,12 +1221,12 @@
     </div>
 
     <div class="nav-actions">
-      <a href="admin.html" id="btnNavAdmin" class="btn-nav-demo" style="text-decoration: none;" title="Acessar painel administrativo">
-        🔒 Acessar Painel
+      <a href="admin.html" id="btnNavAdmin" class="btn-nav-demo" style="text-decoration: none;" title="Já sou cliente - Acessar painel administrativo">
+        🔒 Já sou cliente, Entrar
       </a>
-      <button type="button" class="btn-cta-gold" onclick="irParaCadastro('pro')">
+      <a href="#planos" class="btn-cta-gold" style="text-decoration: none;" onclick="rolarParaPlanos(event)">
         ✦ Criar Meu Negócio
-      </button>
+      </a>
     </div>
   </nav>
 
@@ -1246,9 +1246,9 @@
     </p>
 
     <div class="hero-buttons">
-      <button type="button" class="btn-cta-gold btn-hero-large" onclick="irParaCadastro('pro')">
+      <a href="#planos" class="btn-cta-gold btn-hero-large" style="text-decoration: none;" onclick="rolarParaPlanos(event)">
         ✦ Começar Agora — Criar Meu Negócio
-      </button>
+      </a>
       <a href="vitrine.html?tenant=studio-lumina" class="btn-nav-demo btn-hero-large" target="_blank">
         Ver Demonstração ao Vivo →
       </a>
@@ -1604,9 +1604,9 @@
     <p class="cta-banner-sub">
       Crie seu negócio agora mesmo, escolha a foto que vai brilhar na sua capa e comece a receber agendamentos hoje.
     </p>
-    <button type="button" class="btn-cta-gold btn-hero-large" onclick="irParaCadastro('pro')">
-      ✦ Criar Meu Negócio em 1 Minuto
-    </button>
+    <a href="#planos" class="btn-cta-gold btn-hero-large" style="text-decoration: none;" onclick="rolarParaPlanos(event)">
+      ✦ Criar Meu Negócio — Escolher Plano
+    </a>
   </div>
 
   <!-- Footer -->
@@ -1714,6 +1714,16 @@
     });
 
     let currentSelectedPlan = 'pro';
+
+    function rolarParaPlanos(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const el = document.getElementById('planos');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.hash = '#planos';
+      }
+    }
 
     function irParaCadastro(plano) {
       window.location.href = `cadastro.html?plano=${encodeURIComponent(plano || 'pro')}`;
